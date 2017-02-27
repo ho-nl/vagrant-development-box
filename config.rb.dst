@@ -4,3 +4,5 @@ domains %w(www.magento-hypernode.box)
 profiler true
 developer true
 directory 'server'
+unison_guest 'public'
+unison_ignore 'Name {.DS_Store,.git,var}'
