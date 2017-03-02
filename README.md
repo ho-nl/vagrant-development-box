@@ -5,15 +5,6 @@ Fast Byte Hypernode Box (Uses nfs_guest plugin for file shares)
 
 Based on images from https://github.com/byteinternet/hypernode-vagrant
 
-# Installation
-
-Installation is possible via composer:
-
-```bash
-composer create-project --keep-vcs ecomdev/fast-hypernode
-```
-
-
 # Requirements
 
 1. Vagrant plugins installed:
@@ -28,8 +19,23 @@ composer create-project --keep-vcs ecomdev/fast-hypernode
 
 # Getting Started
 
-1. Copy config.rb.dst to config.rb
-2. Edit it to reflect your project settings
+1. create the following folder structure:
+
+```
+myproject/src
+myproject/vagrant
+```
+
+2. Copy the vagrant box
+
+```
+cd myproject
+git clone git@github.com:ho-nl/vagrant-development-box.git vagrant
+cd vagrant
+cp config.rb.dst config.fb
+```
+3. Edit it to reflect your project settings
+
 ```ruby
 name 'your-project-name'
 hostname name + '.box' # will be your main url http://your-project-name.box/
@@ -44,7 +50,7 @@ unison_host '../src'
 varnish true # 
 ```
 
-3. Run vagrant up in this directory, if everything went alright you're greeted with this message:
+4. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
 
 ```
 ==> hypernode: Welcome to Hypernode Vagrant Box!
