@@ -7,7 +7,7 @@ Based on images from https://github.com/byteinternet/hypernode-vagrant
 
 # Requirements
 
-1. Vagrant plugins installed:
+a. Vagrant plugins installed:
 
 [`vagrant plugin install pluginname`](https://www.vagrantup.com/docs/plugins/usage.html)
 
@@ -15,27 +15,23 @@ Based on images from https://github.com/byteinternet/hypernode-vagrant
 * vagrant-auto_network
 * vagrant-unison2 ~~vagrant-nfs_guest~~
 
-2. [VirtualBox](https://www.virtualbox.org/) installed
+b. [VirtualBox](https://www.virtualbox.org/) installed
 
 # Getting Started
 
-1. create the following folder structure:
-
+a. Create the following folder structure:
 ```
 myproject/src
 myproject/vagrant
 ```
-
-2. Copy the vagrant box
-
+b. Copy the vagrant box
 ```
 cd myproject
 git clone git@github.com:ho-nl/vagrant-development-box.git vagrant
 cd vagrant
 cp config.rb.dst config.rb
 ```
-3. Edit it to reflect your project settings
-
+c. Edit it to reflect your project settings
 ```ruby
 name 'your-project-name'
 hostname name + '.box' # will be your main url http://your-project-name.box/
@@ -50,7 +46,7 @@ unison_host '../src'
 varnish true # 
 ```
 
-4. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
+d. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
 
 ```
 ==> hypernode: Welcome to Hypernode Vagrant Box!
