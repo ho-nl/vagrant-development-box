@@ -32,7 +32,7 @@ myproject/vagrant
 cd myproject
 git clone git@github.com:ho-nl/vagrant-development-box.git vagrant
 cd vagrant
-cp config.rb.dst config.fb
+cp config.rb.dst config.rb
 ```
 3. Edit it to reflect your project settings
 
