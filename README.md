@@ -149,7 +149,7 @@ Since box doesn't sync the `var` folder, Magento's cache needs to be flushed fro
 ## Varnish
 
 This box supports Varnish by default. Installation and usage instructions can be found here:
-- https://support.hypernode.com/knowledgebase/varnish-on-hypernode/
+- https://support.hypernode.com/knowledgebase/varnish-on-magento2/
 
 # Known issues:
 - You can't run `vagrant provision` to update the configuration. Once you have enabled varnish for example and you want to disable it, you'll have to recreate the box or fix it in the box manually.
