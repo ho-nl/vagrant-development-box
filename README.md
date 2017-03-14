@@ -151,7 +151,7 @@ Since box doesn't sync the `var` folder, Magento's cache needs to be flushed fro
 This box supports Varnish by default. Installation and usage instructions can be found here:
 - https://support.hypernode.com/knowledgebase/varnish-on-magento2/
 
-# Magento 2 configuration
+# Magento 1 configuration
 
 ## Config needs to have correct unison_guest
 
