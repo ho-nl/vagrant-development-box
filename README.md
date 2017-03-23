@@ -10,7 +10,9 @@ Based on images from https://github.com/byteinternet/hypernode-vagrant
 a. Unison installed:
 `brew install unison`
 
-b. Vagrant plugins installed:
+b. [Vagrant](https://www.vagrantup.com/downloads.html) installed
+
+c. Vagrant plugins installed:
 
 [`vagrant plugin install pluginname`](https://www.vagrantup.com/docs/plugins/usage.html)
 
@@ -18,7 +20,7 @@ b. Vagrant plugins installed:
 * vagrant-auto_network
 * vagrant-unison2
 
-c. [VirtualBox](https://www.virtualbox.org/) installed
+d. [VirtualBox](https://www.virtualbox.org/) installed
 
 # Getting Started
 
