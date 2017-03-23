@@ -7,15 +7,18 @@ Based on images from https://github.com/byteinternet/hypernode-vagrant
 
 # Requirements
 
-a. Vagrant plugins installed:
+a. Unison installed:
+`brew install unison`
+
+b. Vagrant plugins installed:
 
 [`vagrant plugin install pluginname`](https://www.vagrantup.com/docs/plugins/usage.html)
 
 * vagrant-hostmanager 
 * vagrant-auto_network
-* vagrant-unison2 ~~vagrant-nfs_guest~~
+* vagrant-unison2
 
-b. [VirtualBox](https://www.virtualbox.org/) installed
+c. [VirtualBox](https://www.virtualbox.org/) installed
 
 # Getting Started
 
