@@ -66,6 +66,7 @@ Vagrant.configure("2") do |config|
   # Loads config.rb from the same directory where Vagrantfile is in
   box_config.load(File.join(current_file.dirname, 'config.rb.dst'))
   box_config.load(File.join(current_file.dirname, 'config.rb'))
+  box_config.load(File.join(current_file.dirname, '../config.rb'))
 
   AutoNetwork.default_pool = box_config.get(:network)
 
