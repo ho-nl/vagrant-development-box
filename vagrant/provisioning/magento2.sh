@@ -12,4 +12,4 @@ $AS_USER touch ${HOME_DIR}/nginx/magento2.flag
 [ -d ${HOME_DIR}/public ] || $AS_USER mkdir ${HOME_DIR}/public
 
 $AS_USER rm -r ${HOME_DIR}/public
-$AS_USER ln -fs ${HOME_DIR}/magento2/pub/* ${HOME_DIR}/public
+$AS_USER ln -fs ${HOME_DIR}/magento2/pub ${HOME_DIR}/public
