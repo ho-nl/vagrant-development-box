@@ -120,7 +120,7 @@ There are two ways to connect to your Vagrant box:
 The filesystem of your vagrant box must contain all files to be able to operate quickly.
 The filesystem of your host system must contain all files for PHPStorm be able to operate.
 
-To achieve this, we use Unison. From this folder run the following from this folder.
+To achieve this, we use Unison. From the vagrant folder, run the following.
 ```
 vagrant unison-sync-once && vagrant unison-sync-polling
 ```
