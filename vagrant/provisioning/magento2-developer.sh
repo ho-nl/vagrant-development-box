@@ -9,7 +9,6 @@ MAGENTO_DIR=${VAGRANT_PROJECT_DIR:-magento2}
 cd $HOME_DIR/${MAGENTO_DIR}
 
 $AS_USER bin/magento cache:disable full_page
-$AS_USER bin/magento cache:disable full_page
 
 $AS_USER tee "dev/profiler-trigger.php" <<"PHPFILE1"
 <?php
