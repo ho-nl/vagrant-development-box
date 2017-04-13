@@ -11,5 +11,5 @@ $AS_USER touch ${HOME_DIR}/nginx/magento2.flag
 [ -d ${HOME_DIR}/${MAGENTO_DIR} ] || $AS_USER mkdir ${HOME_DIR}/${MAGENTO_DIR}
 [ -d ${HOME_DIR}/public ] || $AS_USER mkdir ${HOME_DIR}/public
 
-cd ${HOME_DIR}
-$AS_USER ln -fs ${MAGENTO_DIR}/pub/* ${HOME_DIR}/public
+cd ${HOME_DIR}/public
+$AS_USER ln -fs ../magento2/pub/* .
