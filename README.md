@@ -70,6 +70,7 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `hostname` - default project hostname
 * `domains` - list of additional domain names for your project 
 * `varnish` - enable or disable varnish for your project (can be always enabled for Magento 2, can be disabled in the application) (default: `false`)
+* `varnish_vcl` - relative path to the varnish file that is to be used, e.g. 'magento2/varnish.vcl' (default: null)
 * `profiler` - enable or disable tideways-profiler (default: `false`)
 * `developer` - enable or disable developer mode in Magento (default: `false`)
 * `magento2` - Magento 2.0 installment? (default: `false`)
