@@ -119,11 +119,13 @@ Vagrant.configure("2") do |config|
     }
   end
 
-  config.vm.provision 'shell', path: 'vagrant/boot/varnish.sh', run: 'always', env: {
-      VARNISH_VCL: box_config.get(:varnish_vcl),
-      VAGRANT_USER: box_config.get(:user),
-      VAGRANT_PROJECT_DIR: project_dir
-  }
+  if box_config.flag?(:varnish)
+    config.vm.provision 'shell', path: 'vagrant/boot/varnish.sh', run: 'always', env: {
+        VARNISH_VCL: box_config.get(:varnish_vcl),
+        VAGRANT_USER: box_config.get(:user),
+        VAGRANT_PROJECT_DIR: project_dir
+    }
+  end
 
   config.hostmanager.enabled = true
   config.hostmanager.manage_host = true
