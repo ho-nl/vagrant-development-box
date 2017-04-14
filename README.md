@@ -7,15 +7,20 @@ Based on images from https://github.com/byteinternet/hypernode-vagrant
 
 # Requirements
 
-a. Vagrant plugins installed:
+a. Unison installed:
+`brew install unison`
+
+b. [Vagrant](https://www.vagrantup.com/downloads.html) installed
+
+c. Vagrant plugins installed:
 
 [`vagrant plugin install pluginname`](https://www.vagrantup.com/docs/plugins/usage.html)
 
 * vagrant-hostmanager 
 * vagrant-auto_network
-* vagrant-unison2 ~~vagrant-nfs_guest~~
+* vagrant-unison2
 
-b. [VirtualBox](https://www.virtualbox.org/) installed
+d. [VirtualBox](https://www.virtualbox.org/) installed
 
 # Getting Started
 
@@ -65,6 +70,7 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `hostname` - default project hostname
 * `domains` - list of additional domain names for your project 
 * `varnish` - enable or disable varnish for your project (can be always enabled for Magento 2, can be disabled in the application) (default: `false`)
+* `varnish_vcl` - relative path to the varnish file that is to be used, e.g. 'magento2/varnish.vcl' (default: null)
 * `profiler` - enable or disable tideways-profiler (default: `false`)
 * `developer` - enable or disable developer mode in Magento (default: `false`)
 * `magento2` - Magento 2.0 installment? (default: `false`)
@@ -115,7 +121,7 @@ There are two ways to connect to your Vagrant box:
 The filesystem of your vagrant box must contain all files to be able to operate quickly.
 The filesystem of your host system must contain all files for PHPStorm be able to operate.
 
-To achieve this, we use Unison. From this folder run the following from this folder.
+To achieve this, we use Unison. From the vagrant folder, run the following.
 ```
 vagrant unison-sync-once && vagrant unison-sync-polling
 ```

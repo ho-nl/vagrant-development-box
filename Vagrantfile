@@ -20,7 +20,9 @@ end
 require_relative 'vagrant/inline/config'
 
 # Define Vagrantfile configuration options
-VagrantApp::Config.option(:varnish, false) # If varnish needs to be enabled
+VagrantApp::Config
+  .option(:varnish, false) # If varnish needs to be enabled
+  .option(:varnish_vcl, false) # Path to your varnish vcl file
   .option(:profiler, false) # Is profiler needs to be installed
   .option(:xdebug, false) # Is xdebug needs to be installed
   .option(:developer, false) # Is developer mode should be enabled
@@ -51,7 +53,8 @@ Vagrant.configure("2") do |config|
   current_file = Pathname.new(__FILE__)
   box_config = VagrantApp::Config.new
   # Base hypernode provisioner
-  box_config.shell_add('hypernode.sh')
+  box_config
+    .shell_add('hypernode.sh')
     .shell_add('composer.sh') # Composer installer
     .shell_add('nfs.sh', :unison, true) # NFS server modifications to have proper permissions
     .shell_add('developer.sh', :developer) # Developer mode setting, depends on :developer configuration flag
@@ -114,6 +117,14 @@ Vagrant.configure("2") do |config|
         VAGRANT_FPM_SERVICE: box_config.flag?(:php7) ? 'php7.0-fpm' : 'php5-fpm',
         VAGRNAT_PHP_ETC_DIR: box_config.flag?(:php7) ? '/etc/php/7.0/' : '/etc/php5/',
         VAGRNAT_PHP_PACKAGE_PREFIX: box_config.flag?(:php7) ? 'php7.0' : 'php5',
+        VAGRANT_PROJECT_DIR: project_dir
+    }
+  end
+
+  if box_config.flag?(:varnish)
+    config.vm.provision 'shell', path: 'vagrant/boot/varnish.sh', run: 'always', env: {
+        VARNISH_VCL: box_config.get(:varnish_vcl),
+        VAGRANT_USER: box_config.get(:user),
         VAGRANT_PROJECT_DIR: project_dir
     }
   end
