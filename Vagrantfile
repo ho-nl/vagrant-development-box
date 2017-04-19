@@ -132,6 +132,8 @@ Vagrant.configure("2") do |config|
   config.hostmanager.ignore_private_ip = false
   config.hostmanager.include_offline = true
 
+  config.vm.network :forwarded_port, guest: 80, host: 8080
+
   config.vm.define 'hypernode' do |node|
     node.vm.hostname = box_config.get(:hostname)
     node.vm.network :private_network, auto_network: true
