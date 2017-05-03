@@ -126,7 +126,11 @@ To achieve this, we use Unison. From the vagrant folder, run the following.
 vagrant unison-sync-once && vagrant unison-sync-polling
 ```
 
-*You always need to enable this when working with the box, or else the local changes wont be made in the box.
+*You always need to enable this when working with the box, or else the local changes wont be made in the box.*
+
+### Resolve sync issues `skipped: var (properties changed on both sides)`
+
+Start unison with the following command `vagrant unison-sync-interact` to interactively solve issues. For more information take a look at the [vagrant plugin page](https://github.com/dcosson/vagrant-unison2#sync-in-interactive-mode).
 
 ## Connecting to MySQL externally (SequelPro)
 
