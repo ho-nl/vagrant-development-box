@@ -29,6 +29,7 @@ VagrantApp::Config
   .option(:install, false) # Install Magento? (for now only 2.0)
   .option(:shell, false) # Shell script?
   .option(:php7, false) # Is it PHP7?
+  .option(:ioncube, false) # Flag for installing IonCube loader PHP module
   .option(:name, '') # Name
   .option(:hostname, '') # Hostname
   .option(:domains, []) # Domain list
@@ -64,6 +65,7 @@ Vagrant.configure("2") do |config|
     .shell_add('magento2-developer.sh', [:magento2, :install, :developer]) # M2 Developer options, depends on :magento2, :install, :developer
     .shell_add('shell.sh', :shell) # Fish shell installer, depends on :shell flag
     .shell_add('unison.sh', :unison)
+    .shell_add('ioncube.sh', :ioncube) # IonCube installer shell script, depends on :ioncube flag
     .shell_add('hello.sh') # Final message with connection instructions
 
   # Loads config.rb from the same directory where Vagrantfile is in
