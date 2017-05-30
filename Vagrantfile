@@ -24,6 +24,7 @@ VagrantApp::Config
   .option(:varnish, false) # If varnish needs to be enabled
   .option(:varnish_vcl, false) # Path to your varnish vcl file
   .option(:profiler, false) # Is profiler needs to be installed
+  .option(:xdebug, false) # Is xdebug needs to be installed
   .option(:developer, false) # Is developer mode should be enabled
   .option(:magento2, false) # Is it Magento 2.0
   .option(:install, false) # Install Magento? (for now only 2.0)
@@ -59,6 +60,7 @@ Vagrant.configure("2") do |config|
     .shell_add('nfs.sh', :unison, true) # NFS server modifications to have proper permissions
     .shell_add('developer.sh', :developer) # Developer mode setting, depends on :developer configuration flag
     .shell_add('profiler.sh', :profiler) # Profiler installer, depends on :profiler configuration flag
+    .shell_add('xdebug.sh', :xdebug) # Xdebug installer, depends on :xdebug configuration flag
     .shell_add('disable-varnish.sh', :varnish, true) # Varnish disabler, depends on :varnish inverted flag
     .shell_add('magento2.sh', :magento2) # M2 Nginx Config Flag, depends on :magento2 flag
     .shell_add('magento2-install.sh', [:magento2, :install]) # M2 Installer, depends on :magento2 and :install
