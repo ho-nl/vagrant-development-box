@@ -38,17 +38,18 @@ cp config.rb.dst config.rb
 ```
 c. Edit it to reflect your project settings
 ```ruby
-name 'your-project-name'
-hostname name + '.box' # will be your main url http://your-project-name.box/
-domains %w(www.your-project-name-additional.box)
-profiler true # Add tideways-profiler?
-developer true # Enable development mode?
-php7 true # Can be set to false for legacy reasons
-magento2 false
+name 'kingdo'
+hostname name + '.box'
+domains %w(www.kingdo.box)
+profiler false
+developer true
+magento2 true
+php7 true
 cpu 2
 memory 2048
-unison_host '../src' 
-varnish true # 
+unison_host '../src'
+varnish false
+xdebug true
 ```
 
 d. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
@@ -88,6 +89,7 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `unison_ignore` - Which files won't be used with updating changes with Unison (default `Name {.DS_Store,.git,var}`)
 * `unison_host` - Relative path from this vagrant folder to the source of the root of the installation. (default: `../src`)
 * `unison_guest` (default: `public`)
+* `xdebug` Install xdebug? (default: `false`) 
 
 ## Adding custom shell provisioners
 
