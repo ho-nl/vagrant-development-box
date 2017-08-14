@@ -47,7 +47,7 @@ VagrantApp::Config
   .option(:unison_manage_permissions, false) # Unison manage permissions
   .option(:unison, mount_plugin == 'vagrant-unison2') # Unison plugin installation
   .option(:network, '33.33.33.0/24') # Directory to be used as mount on host machine
-
+  .option(:forward_port, false) # Forward port 80 to 8080 on host?
 Vagrant.configure("2") do |config|
 
   # Prepare configuration and setup shell scripts for it
@@ -136,7 +136,9 @@ Vagrant.configure("2") do |config|
   config.hostmanager.ignore_private_ip = false
   config.hostmanager.include_offline = true
 
-  config.vm.network :forwarded_port, guest: 80, host: 8080
+  if box_config.flag?(:forward_port)
+    config.vm.network :forwarded_port, guest: 80, host: 8080
+  end
 
   config.vm.define 'hypernode' do |node|
     node.vm.hostname = box_config.get(:hostname)
