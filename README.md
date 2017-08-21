@@ -45,7 +45,7 @@ profiler false
 developer true
 magento2 true
 php7 true
-linked_clone false # Can be set to true to link the master box reducing disk space usage
+linked_clone false
 cpu 2
 memory 2048
 unison_host '../src'
@@ -79,6 +79,7 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `install` - Shall Magento be installed? (default: `false`, only Magento 2.0 installation supported)
 * `shell` - Install FishShell? (default: `false`)
 * `php7` - PHP7 instead of PHP5? (default: `false`)
+* `linked_clone` - Line a master box instead of importing, should reduce disk space ussage (default: `false`)
 * `cpu` - number of CPUs to dedicate to your VM (default: `1`)
 * `memory` - memory in MB to dedicate to your VM (default: `1024`)
 * `user` - User name for nfs share permissions (default: `app`)
