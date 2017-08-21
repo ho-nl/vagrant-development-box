@@ -44,6 +44,7 @@ domains %w(www.your-project-name-additional.box)
 profiler true # Add tideways-profiler?
 developer true # Enable development mode?
 php7 true # Can be set to false for legacy reasons
+linked_clone false # Can be set to true to link the master box reducing disk space usage
 magento2 false
 cpu 2
 memory 2048

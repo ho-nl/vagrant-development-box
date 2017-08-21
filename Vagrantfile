@@ -8,9 +8,9 @@ mount_plugin=nil
 
 %w(vagrant-unison2 vagrant-nfs_guest).each do |plugin|
  if Vagrant.has_plugin?(plugin)
-    mount_plugin=plugin 
+    mount_plugin=plugin
     break
- end  
+ end
 end
 
 if mount_plugin.nil?
@@ -32,6 +32,7 @@ VagrantApp::Config
   .option(:php7, false) # Is it PHP7?
   .option(:ioncube, false) # Flag for installing IonCube loader PHP module
   .option(:name, '') # Name
+  .option(:linked_clone, false) # Use a linked base box clone
   .option(:hostname, '') # Hostname
   .option(:domains, []) # Domain list
   .option(:cpu, 1) # Number of dedicated CPU
@@ -77,6 +78,12 @@ Vagrant.configure("2") do |config|
 
   AutoNetwork.default_pool = box_config.get(:network)
 
+  if box_config.get(:name)
+    config.vm.provider :virtualbox do |v|
+      v.name = box_config.get(:name)
+    end
+  end
+
   if box_config.flag?(:php7)
     config.vm.box = 'hypernode_php7'
     config.vm.box_url = 'http://vagrant.hypernode.com/customer/php7/catalog.json'
@@ -85,13 +92,19 @@ Vagrant.configure("2") do |config|
     config.vm.box_url = 'http://vagrant.hypernode.com/customer/php5/catalog.json'
   end
 
+  if box_config.flag?(:linked_clone)
+    config.vm.provider :virtualbox do |v|
+      v.linked_clone = true
+    end
+  end
+
   config.ssh.forward_agent = true
 
   config.vm.provider :virtualbox do |v, o|
     v.memory = box_config.get(:memory)
     v.cpus =  box_config.get(:cpu)
     v.customize [
-      "modifyvm", :id, 
+      "modifyvm", :id,
       "--paravirtprovider", "kvm" # for linux guest
     ]
   end
