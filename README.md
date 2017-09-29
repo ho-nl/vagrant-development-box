@@ -132,7 +132,13 @@ To achieve this, we use Unison. From the vagrant folder, run the following.
 vagrant vagrant unison-sync-polling
 ```
 
-## Using file system events for real time tracking
+*You always need to enable this when working with the box, or else the local changes wont be made in the box.*
+
+### Resolve sync issues `skipped: var (properties changed on both sides)`
+
+Start unison with the following command `vagrant unison-sync-interact` to interactively solve issues. For more information take a look at the [vagrant plugin page](https://github.com/dcosson/vagrant-unison2#sync-in-interactive-mode).
+
+### Using file system events for real time tracking
 
 ```bash
 brew tap eugenmayer/dockersync
@@ -145,12 +151,6 @@ sudo sysctl -w kern.maxfilesperproc=524288
 sudo sysctl -w kern.maxfiles=524288
 ulimit -n 524288
 ```
-
-*You always need to enable this when working with the box, or else the local changes wont be made in the box.*
-
-### Resolve sync issues `skipped: var (properties changed on both sides)`
-
-Start unison with the following command `vagrant unison-sync-interact` to interactively solve issues. For more information take a look at the [vagrant plugin page](https://github.com/dcosson/vagrant-unison2#sync-in-interactive-mode).
 
 ## Connecting to MySQL externally (SequelPro)
 
