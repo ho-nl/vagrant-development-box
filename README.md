@@ -91,6 +91,7 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `unison_ignore` - Which files won't be used with updating changes with Unison (default `Name {.DS_Store,.git,var}`)
 * `unison_host` - Relative path from this vagrant folder to the source of the root of the installation. (default: `../src`)
 * `unison_guest` (default: `public`)
+* `unison_watch` (default: `5`) 
 * `xdebug` Install xdebug? (default: `false`)
 * `forward_port` Forward port 80 to 8080 on host (default: `false`) 
 
@@ -128,7 +129,21 @@ The filesystem of your host system must contain all files for PHPStorm be able t
 
 To achieve this, we use Unison. From the vagrant folder, run the following.
 ```
-vagrant unison-sync-once && vagrant unison-sync-polling
+vagrant vagrant unison-sync-polling
+```
+
+## Using file system events for real time tracking
+
+```bash
+brew tap eugenmayer/dockersync
+brew install eugenmayer/dockersync/unox
+```
+
+```bash
+# Fatal error: Server: Filesystem watcher error: cannot add a watcher: system limit reached
+sudo sysctl -w kern.maxfilesperproc=524288
+sudo sysctl -w kern.maxfiles=524288
+ulimit -n 524288
 ```
 
 *You always need to enable this when working with the box, or else the local changes wont be made in the box.*

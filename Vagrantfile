@@ -45,6 +45,7 @@ VagrantApp::Config
   .option(:unison_host, 'project') # Directory for project code
   .option(:unison_guest, 'project') # Directory for project code
   .option(:unison_ignore, 'Name {.DS_Store,.git}') # Unison ignore pattern
+  .option(:unison_repeat, '1') # Unison repeat mode, can be a number in seconds or 'watch'
   .option(:unison_manage_permissions, false) # Unison manage permissions
   .option(:unison, mount_plugin == 'vagrant-unison2') # Unison plugin installation
   .option(:network, '33.33.33.0/24') # Directory to be used as mount on host machine
@@ -170,6 +171,7 @@ Vagrant.configure("2") do |config|
       config.unison.host_folder = box_config.get(:unison_host)
       config.unison.guest_folder = box_config.get(:unison_guest)
       config.unison.ignore = box_config.get(:unison_ignore)
+      config.unison.repeat = box_config.get(:unison_repeat)
       config.unison.perm = box_config.flag?(:unison_manage_permissions) ? 1 : 0
       config.unison.ssh_host = box_config.get(:hostname)
       config.unison.ssh_user = 'app'
