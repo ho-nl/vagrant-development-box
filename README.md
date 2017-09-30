@@ -170,6 +170,21 @@ Since box doesn't sync the `var` folder, Magento's cache needs to be flushed fro
 This box supports Varnish by default. Installation and usage instructions can be found here:
 - https://support.hypernode.com/knowledgebase/varnish-on-magento2/
 
+## Redis
+
+Magento 2.1: http://devdocs.magento.com/guides/v2.1/config-guide/redis/redis-pg-cache.html
+Magento 2.2:
+
+```
+php bin/magento setup:config:set --cache-backend=redis --cache-backend-redis-db=0
+php bin/magento setup:config:set --page-cache=redis --page-cache-redis-db=1
+php bin/magento setup:config:set --session-save=redis --session-save-redis-db=2
+```
+
+## Sphinx
+
+By default the `searchd` is installed so you can used.
+
 # Magento 1 configuration
 
 ## Config needs to have correct unison_guest
