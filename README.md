@@ -1,7 +1,6 @@
-# Fast Hypernode Vagrant Box
+# Reach Digital Development Vagrant Box
 
-**The fastest Magento Vagrant VM**
-Fast Byte Hypernode Box (Uses nfs_guest plugin for file shares)
+Super easy to install, super fast and 
 
 Based on images from https://github.com/byteinternet/hypernode-vagrant
 
@@ -10,7 +9,7 @@ Based on images from https://github.com/byteinternet/hypernode-vagrant
 a. Unison installed:
 
 ```bash
-brew install uniso
+brew install unison
 brew tap eugenmayer/dockersync
 brew install eugenmayer/dockersync/unox
 ```
