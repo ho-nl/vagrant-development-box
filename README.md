@@ -8,7 +8,19 @@ Based on images from https://github.com/byteinternet/hypernode-vagrant
 # Requirements
 
 a. Unison installed:
-`brew install unison`
+
+```bash
+brew install uniso
+brew tap eugenmayer/dockersync
+brew install eugenmayer/dockersync/unox
+```
+
+```bash
+# Fatal error: Server: Filesystem watcher error: cannot add a watcher: system limit reached
+sudo sysctl -w kern.maxfilesperproc=524288
+sudo sysctl -w kern.maxfiles=524288
+ulimit -n 524288
+```
 
 b. [Vagrant](https://www.vagrantup.com/downloads.html) installed
 
@@ -105,22 +117,12 @@ shell_add 'some-custom-shell-script.sh'
 shell_add 'some-custom-script-for-php7.sh', :php7  
 ```
 
-
 ## Connecting to your Vagrant box
 
 There are two ways to connect to your Vagrant box:
 1. As Root to do system administration: `vagrant ssh`
 	- DO NOT edit project files with the root user, this will give permission errors in the application
 2. As User to do all development work on: `ssh app@your-project-name.box`
-
-### Uploading your id_rsa.pub to the box to connect to app@your-project-name.box.
-
-> I had the same problem that I couldn't connect with `ssh app@your-project-name.box -A`.
-
-1. Copy your own id_rsa: `pbcopy < ~/.ssh/id_rsa.pub`
-2. Login with `vagrant ssh`
-3. Switch to the `app` user with `sudo su - app`
-4. Run `echo "pasteryourkeyhere" >> ~/.ssh/authorized_keys`
 
 ## Syncing the `../src` (unison) folder with the vagrant box.
 
@@ -137,20 +139,6 @@ vagrant vagrant unison-sync-polling
 ### Resolve sync issues `skipped: var (properties changed on both sides)`
 
 Start unison with the following command `vagrant unison-sync-interact` to interactively solve issues. For more information take a look at the [vagrant plugin page](https://github.com/dcosson/vagrant-unison2#sync-in-interactive-mode).
-
-### Using file system events for real time tracking
-
-```bash
-brew tap eugenmayer/dockersync
-brew install eugenmayer/dockersync/unox
-```
-
-```bash
-# Fatal error: Server: Filesystem watcher error: cannot add a watcher: system limit reached
-sudo sysctl -w kern.maxfilesperproc=524288
-sudo sysctl -w kern.maxfiles=524288
-ulimit -n 524288
-```
 
 ## Connecting to MySQL externally (SequelPro)
 

@@ -123,6 +123,12 @@ Vagrant.configure("2") do |config|
     project_dir =  box_config.get(:unison_guest)
   end
 
+  # Automatically upload the users id_rsa.pub to the box
+  public_key_path = File.join(Dir.home, ".ssh", "id_rsa.pub")
+  if File.exist?(public_key_path)
+    public_key = IO.read(public_key_path)
+  end
+
   box_config.shell_list.each do |file|
     config.vm.provision 'shell', path: 'vagrant/provisioning/' + file, env: {
         VAGRANT_UID: box_config.get(:uid).to_s,
@@ -133,7 +139,8 @@ Vagrant.configure("2") do |config|
         VAGRANT_FPM_SERVICE: box_config.flag?(:php7) ? 'php7.0-fpm' : 'php5-fpm',
         VAGRNAT_PHP_ETC_DIR: box_config.flag?(:php7) ? '/etc/php/7.0/' : '/etc/php5/',
         VAGRNAT_PHP_PACKAGE_PREFIX: box_config.flag?(:php7) ? 'php7.0' : 'php5',
-        VAGRANT_PROJECT_DIR: project_dir
+        VAGRANT_PROJECT_DIR: project_dir,
+        VAGRANT_HOST_PUBLIC_KEY: public_key
     }
   end
 
