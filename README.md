@@ -63,6 +63,7 @@ memory 2048
 unison_host '../src'
 unison_repeat 'watch'
 varnish true
+#varnish_vcl 'magento2/varnish.vcl'
 xdebug false
 ```
 
