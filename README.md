@@ -1,6 +1,6 @@
 # Reach Digital Development Vagrant Box
 
-Super easy to install, super fast and 
+Super easy to install, fast and a pleasure to work with.
 
 Based on images from https://github.com/byteinternet/hypernode-vagrant
 

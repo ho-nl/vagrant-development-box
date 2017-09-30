@@ -2,8 +2,6 @@
 
 set -e
 
-echo "Starting varnish..."
-
 AS_USER="sudo -u ${VAGRANT_USER}"
 HOME_DIR=$(getent passwd ${VAGRANT_USER} | cut -d ':' -f6)
 
