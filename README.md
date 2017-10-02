@@ -1,24 +1,35 @@
-# Fast Hypernode Vagrant Box
+# Reach Digital Development Vagrant Box
 
-**The fastest Magento Vagrant VM**
-Fast Byte Hypernode Box (Uses nfs_guest plugin for file shares)
+Super easy to install, fast and a pleasure to work with.
 
 Based on images from https://github.com/byteinternet/hypernode-vagrant
 
 # Requirements
 
 a. Unison installed:
-`brew install unison`
+
+```bash
+brew install unison
+brew tap eugenmayer/dockersync
+brew install eugenmayer/dockersync/unox
+```
+
+```bash
+# Fatal error: Server: Filesystem watcher error: cannot add a watcher: system limit reached
+sudo sysctl -w kern.maxfilesperproc=524288
+sudo sysctl -w kern.maxfiles=524288
+ulimit -n 524288
+```
 
 b. [Vagrant](https://www.vagrantup.com/downloads.html) installed
 
 c. Vagrant plugins installed:
 
-[`vagrant plugin install pluginname`](https://www.vagrantup.com/docs/plugins/usage.html)
-
-* vagrant-hostmanager 
-* vagrant-auto_network
-* vagrant-unison2
+```
+vagrant plugin install vagrant-hostmanager 
+vagrant plugin install vagrant-auto_network
+vagrant plugin install vagrant-unison2
+```
 
 d. [VirtualBox](https://www.virtualbox.org/) installed
 
@@ -38,36 +49,34 @@ cp config.rb.dst config.rb
 ```
 c. Edit it to reflect your project settings
 ```ruby
-name 'kingdo'
+name 'projectname'
 hostname name + '.box'
-domains %w(www.kingdo.box)
+domains %w(www.'+ name + '.box)
 profiler false
 developer true
 magento2 true
 php7 true
-linked_clone false
+linked_clone true
 cpu 2
 memory 2048
 unison_host '../src'
-varnish false
-xdebug true
+unison_repeat 'watch'
+varnish true
+#varnish_vcl 'magento2/varnish.vcl'
+xdebug false
 ```
 
 d. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
 
-```
-==> hypernode: Welcome to Hypernode Vagrant Box!
-==> hypernode: You can login now with in order to use your box:
-==> hypernode: $ ssh app@your-project-name.box -A
-==> hypernode: To access database, you can use the following credentials in your app:
-==> hypernode: Username: app
-==> hypernode: Password: ************
-```
+<img width="613" alt="schermafbeelding 2017-09-30 om 14 57 29" src="https://user-images.githubusercontent.com/1244416/31045958-bb833756-a5ef-11e7-918b-6529dbc8480e.png">
 
 Please note: it will show some red errors but you can ignore that, those are mostly warnings that can be ignored. If you see a sea of red something probably goes wrong.
 
 ## Configuration Options
 
+<details>
+  <summary>Expand to view all available options</summary>
+	
 * `name` - name of your node
 * `hostname` - default project hostname
 * `domains` - list of additional domain names for your project 
@@ -91,10 +100,11 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `unison_ignore` - Which files won't be used with updating changes with Unison (default `Name {.DS_Store,.git,var}`)
 * `unison_host` - Relative path from this vagrant folder to the source of the root of the installation. (default: `../src`)
 * `unison_guest` (default: `public`)
+* `unison_repeat` (default: `5`) Unison repeat mode, can be a number in seconds or 'watch'
 * `xdebug` Install xdebug? (default: `false`)
 * `forward_port` Forward port 80 to 8080 on host (default: `false`) 
 
-## Adding custom shell provisioners
+### Adding custom shell provisioners
 
 You can easily add more provision shell scripts from configuration file (config.rb):
 ```ruby
@@ -104,6 +114,7 @@ shell_add 'some-custom-shell-script.sh'
 shell_add 'some-custom-script-for-php7.sh', :php7  
 ```
 
+</details>
 
 ## Connecting to your Vagrant box
 
@@ -112,15 +123,6 @@ There are two ways to connect to your Vagrant box:
 	- DO NOT edit project files with the root user, this will give permission errors in the application
 2. As User to do all development work on: `ssh app@your-project-name.box`
 
-### Uploading your id_rsa.pub to the box to connect to app@your-project-name.box.
-
-> I had the same problem that I couldn't connect with `ssh app@your-project-name.box -A`.
-
-1. Copy your own id_rsa: `pbcopy < ~/.ssh/id_rsa.pub`
-2. Login with `vagrant ssh`
-3. Switch to the `app` user with `sudo su - app`
-4. Run `echo "pasteryourkeyhere" >> ~/.ssh/authorized_keys`
-
 ## Syncing the `../src` (unison) folder with the vagrant box.
 
 The filesystem of your vagrant box must contain all files to be able to operate quickly.
@@ -128,7 +130,7 @@ The filesystem of your host system must contain all files for PHPStorm be able t
 
 To achieve this, we use Unison. From the vagrant folder, run the following.
 ```
-vagrant unison-sync-once && vagrant unison-sync-polling
+vagrant vagrant unison-sync-polling
 ```
 
 *You always need to enable this when working with the box, or else the local changes wont be made in the box.*
@@ -163,19 +165,52 @@ Since box doesn't sync the `var` folder, Magento's cache needs to be flushed fro
 
 ## Varnish
 
-This box supports Varnish by default. Installation and usage instructions can be found here:
-- https://support.hypernode.com/knowledgebase/varnish-on-magento2/
+Vagrant is supported by default. Make sure you have a varnish.vcl generated for your project.
+
+1. Log in to the Magento Admin as an administrator.
+2. Navigate to Stores > Configuration > Advanced > System > Full Page Cache
+3. From the Caching Application list, click Varnish Caching
+4. Expand Varnish Configuration and insert the correct information:
+	- Backend Host: 127.0.0.1
+	- Backend Port: 8080
+5. Save your VCL by clicking the button ‘Save config‘ in the top right
+6. Click Export VCL for varnish 4
+
+```
+php bin/magento setup:config:set --http-cache-hosts=127.0.0.1:6081
+```
+
+Now we need to load in the varnish.vcl into varnish. To do this set the following configuration in your config.rb
+
+```
+varnish_vcl 'magento2/varnish.vcl'
+```
+
+And run `vagrant provision`
+
+If everything is running 
+
+## Redis
+
+Magento 2.1: http://devdocs.magento.com/guides/v2.1/config-guide/redis/redis-pg-cache.html
+Magento 2.2:
+
+```
+php bin/magento setup:config:set --cache-backend=redis --cache-backend-redis-db=0
+php bin/magento setup:config:set --page-cache=redis --page-cache-redis-db=1
+php bin/magento setup:config:set --session-save=redis --session-save-redis-db=2
+```
+
+## Sphinx
+
+By default the `searchd` is installed so you can used.
 
 # Magento 1 configuration
 
 ## Config needs to have correct unison_guest
 
-By default this box will try to set the unison_guest folder to the magento2 pub folder. For a Magento 1 instalattion this will result in a default Nginx 404 page when you try to reach your server. Add the following rule to your `config.rb` file: `unison_guest 'public'`
+By default this box will try to set the unison_guest folder to the magento2 pub folder. For a Magento 1 installation this will result in a default Nginx 404 page when you try to reach your server. Add the following rule to your `config.rb` file: `unison_guest 'public'`
 
 ## Need to run modman deploy in vagrant box
 
 The symlinks created on your host machine won't work in the vagrant box. This will result in errors with finding files or (when you use PHP7) a error in layout.php (because the Inchoo_PHP7 module was not applied correctly). Run `modman deploy-all --force` in your vagrant box to fix these issues.
-
-# Known issues:
-- You can't run `vagrant provision` to update the configuration. Once you have enabled varnish for example and you want to disable it, you'll have to recreate the box or fix it in the box manually.
-

@@ -16,3 +16,9 @@ make UISTYLE=text || true
 chmod +x unison
 mv unison /usr/bin/
 
+curl -L -o unison-fsmonitor https://github.com/TentativeConvert/Syndicator/raw/master/unison-binaries/unison-fsmonitor
+
+chmod +x unison-fsmonitor
+mv unison-fsmonitor /usr/bin/
+
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
