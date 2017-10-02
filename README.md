@@ -68,14 +68,7 @@ xdebug false
 
 d. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
 
-```
-==> hypernode: Welcome to Hypernode Vagrant Box!
-==> hypernode: You can login now with in order to use your box:
-==> hypernode: $ ssh app@your-project-name.box -A
-==> hypernode: To access database, you can use the following credentials in your app:
-==> hypernode: Username: app
-==> hypernode: Password: ************
-```
+<img width="613" alt="schermafbeelding 2017-09-30 om 14 57 29" src="https://user-images.githubusercontent.com/1244416/31045958-bb833756-a5ef-11e7-918b-6529dbc8480e.png">
 
 Please note: it will show some red errors but you can ignore that, those are mostly warnings that can be ignored. If you see a sea of red something probably goes wrong.
 
