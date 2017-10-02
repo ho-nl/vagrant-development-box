@@ -92,7 +92,7 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `install` - Shall Magento be installed? (default: `false`, only Magento 2.0 installation supported)
 * `shell` - Install FishShell? (default: `false`)
 * `php7` - PHP7 instead of PHP5? (default: `false`)
-* `linked_clone` - Link a master box instead of importing, should reduce disk space ussage (default: `false`)
+* `linked_clone` - Link a master box instead of importing, should reduce disk space ussage (default: `true`)
 * `cpu` - number of CPUs to dedicate to your VM (default: `1`)
 * `memory` - memory in MB to dedicate to your VM (default: `1024`)
 * `user` - User name for nfs share permissions (default: `app`)
