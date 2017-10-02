@@ -25,11 +25,11 @@ b. [Vagrant](https://www.vagrantup.com/downloads.html) installed
 
 c. Vagrant plugins installed:
 
-[`vagrant plugin install pluginname`](https://www.vagrantup.com/docs/plugins/usage.html)
-
-* vagrant-hostmanager 
-* vagrant-auto_network
-* vagrant-unison2
+```
+vagrant plugin install vagrant-hostmanager 
+vagrant plugin install vagrant-auto_network
+vagrant plugin install vagrant-unison2
+```
 
 d. [VirtualBox](https://www.virtualbox.org/) installed
 
