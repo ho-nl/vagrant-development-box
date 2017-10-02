@@ -165,8 +165,30 @@ Since box doesn't sync the `var` folder, Magento's cache needs to be flushed fro
 
 ## Varnish
 
-This box supports Varnish by default. Installation and usage instructions can be found here:
-- https://support.hypernode.com/knowledgebase/varnish-on-magento2/
+Vagrant is supported by default. Make sure you have a varnish.vcl generated for your project.
+
+1. Log in to the Magento Admin as an administrator.
+2. Navigate to Stores > Configuration > Advanced > System > Full Page Cache
+3. From the Caching Application list, click Varnish Caching
+4. Expand Varnish Configuration and insert the correct information:
+	- Backend Host: 127.0.0.1
+	- Backend Port: 8080
+5. Save your VCL by clicking the button ‘Save config‘ in the top right
+6. Click Export VCL for varnish 4
+
+```
+php bin/magento setup:config:set --http-cache-hosts=127.0.0.1:6081
+```
+
+Now we need to load in the varnish.vcl into varnish. To do this set the following configuration in your config.rb
+
+```
+varnish_vcl 'magento2/varnish.vcl'
+```
+
+And run `vagrant provision`
+
+If everything is running 
 
 ## Redis
 
