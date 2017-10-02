@@ -81,6 +81,9 @@ Please note: it will show some red errors but you can ignore that, those are mos
 
 ## Configuration Options
 
+<details>
+  <summary>Expand to view all available options</summary>
+	
 * `name` - name of your node
 * `hostname` - default project hostname
 * `domains` - list of additional domain names for your project 
@@ -92,7 +95,7 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `install` - Shall Magento be installed? (default: `false`, only Magento 2.0 installation supported)
 * `shell` - Install FishShell? (default: `false`)
 * `php7` - PHP7 instead of PHP5? (default: `false`)
-* `linked_clone` - Link a master box instead of importing, should reduce disk space ussage (default: `true`)
+* `linked_clone` - Link a master box instead of importing, should reduce disk space ussage (default: `false`)
 * `cpu` - number of CPUs to dedicate to your VM (default: `1`)
 * `memory` - memory in MB to dedicate to your VM (default: `1024`)
 * `user` - User name for nfs share permissions (default: `app`)
@@ -108,7 +111,7 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `xdebug` Install xdebug? (default: `false`)
 * `forward_port` Forward port 80 to 8080 on host (default: `false`) 
 
-## Adding custom shell provisioners
+### Adding custom shell provisioners
 
 You can easily add more provision shell scripts from configuration file (config.rb):
 ```ruby
@@ -117,6 +120,8 @@ shell_add 'some-custom-shell-script.sh'
 # Will provision only if PHP7 flag is turned on
 shell_add 'some-custom-script-for-php7.sh', :php7  
 ```
+
+</details>
 
 ## Connecting to your Vagrant box
 
