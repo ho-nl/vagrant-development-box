@@ -165,8 +165,30 @@ Since box doesn't sync the `var` folder, Magento's cache needs to be flushed fro
 
 ## Varnish
 
-This box supports Varnish by default. Installation and usage instructions can be found here:
-- https://support.hypernode.com/knowledgebase/varnish-on-magento2/
+Vagrant is supported by default. Make sure you have a varnish.vcl generated for your project.
+
+1. Log in to the Magento Admin as an administrator.
+2. Navigate to Stores > Configuration > Advanced > System > Full Page Cache
+3. From the Caching Application list, click Varnish Caching
+4. Expand Varnish Configuration and insert the correct information:
+	- Backend Host: 127.0.0.1
+	- Backend Port: 8080
+5. Save your VCL by clicking the button ‘Save config‘ in the top right
+6. Click Export VCL for varnish 4
+
+```
+php bin/magento setup:config:set --http-cache-hosts=127.0.0.1:6081
+```
+
+Now we need to load in the varnish.vcl into varnish. To do this set the following configuration in your config.rb
+
+```
+varnish_vcl 'magento2/varnish.vcl'
+```
+
+And run `vagrant provision`
+
+If everything is running 
 
 ## Redis
 
@@ -187,12 +209,8 @@ By default the `searchd` is installed so you can used.
 
 ## Config needs to have correct unison_guest
 
-By default this box will try to set the unison_guest folder to the magento2 pub folder. For a Magento 1 instalattion this will result in a default Nginx 404 page when you try to reach your server. Add the following rule to your `config.rb` file: `unison_guest 'public'`
+By default this box will try to set the unison_guest folder to the magento2 pub folder. For a Magento 1 installation this will result in a default Nginx 404 page when you try to reach your server. Add the following rule to your `config.rb` file: `unison_guest 'public'`
 
 ## Need to run modman deploy in vagrant box
 
 The symlinks created on your host machine won't work in the vagrant box. This will result in errors with finding files or (when you use PHP7) a error in layout.php (because the Inchoo_PHP7 module was not applied correctly). Run `modman deploy-all --force` in your vagrant box to fix these issues.
-
-# Known issues:
-- You can't run `vagrant provision` to update the configuration. Once you have enabled varnish for example and you want to disable it, you'll have to recreate the box or fix it in the box manually.
-
