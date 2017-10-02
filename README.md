@@ -187,12 +187,8 @@ By default the `searchd` is installed so you can used.
 
 ## Config needs to have correct unison_guest
 
-By default this box will try to set the unison_guest folder to the magento2 pub folder. For a Magento 1 instalattion this will result in a default Nginx 404 page when you try to reach your server. Add the following rule to your `config.rb` file: `unison_guest 'public'`
+By default this box will try to set the unison_guest folder to the magento2 pub folder. For a Magento 1 installation this will result in a default Nginx 404 page when you try to reach your server. Add the following rule to your `config.rb` file: `unison_guest 'public'`
 
 ## Need to run modman deploy in vagrant box
 
 The symlinks created on your host machine won't work in the vagrant box. This will result in errors with finding files or (when you use PHP7) a error in layout.php (because the Inchoo_PHP7 module was not applied correctly). Run `modman deploy-all --force` in your vagrant box to fix these issues.
-
-# Known issues:
-- You can't run `vagrant provision` to update the configuration. Once you have enabled varnish for example and you want to disable it, you'll have to recreate the box or fix it in the box manually.
-
