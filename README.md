@@ -211,6 +211,9 @@ By default the `searchd` is installed so you can used.
 Add the following to `crontab -e`
 ```
 * * * * * php /data/web/magento2/bin/magento cron:run | grep -v "Ran jobs by schedule" >> /data/web/magento2/var/log/magento.cron.log
+```
+
+```
 * * * * * php /data/web/magento2/bin/magento queue:consumers:start quoteItemCleaner --max-messages=500
 * * * * * php /data/web/magento2/bin/magento queue:consumers:start inventoryQtyCounter --max-messages=500
 ```
