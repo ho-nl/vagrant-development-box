@@ -206,6 +206,15 @@ php bin/magento setup:config:set --session-save=redis --session-save-redis-db=2
 
 By default the `searchd` is installed so you can used.
 
+## Cron
+
+Add the following to `crontab -e`
+```
+* * * * * php /data/web/magento2/bin/magento cron:run | grep -v "Ran jobs by schedule" >> /data/web/magento2/var/log/magento.cron.log
+* * * * * php /data/web/magento2/bin/magento queue:consumers:start quoteItemCleaner --max-messages=500
+* * * * * php /data/web/magento2/bin/magento queue:consumers:start inventoryQtyCounter --max-messages=500
+```
+
 # Magento 1 configuration
 
 ## Config needs to have correct unison_guest
