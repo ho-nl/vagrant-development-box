@@ -157,11 +157,12 @@ The system automatically creates a database named `test`, this can be used to up
 
 ## Running grunt/gulp
 
-You can run your `grunt exec:all` from outside the box. If you have custom gulp scripts, those can also be ran from outside the box (even browserSync should work).
+Run your `grunt exec:all` or `gulp production` from **outside** the box.
+They do work inside the box, but beware that the symlinks wont be correct in your local environment.
 
 ## Cache handling
 
-Since box doesn't sync the `var` folder, Magento's cache needs to be flushed from the inside of the box: `php bin/magento c:f`.
+The box doesn't sync the `var` folder, Magento's cache needs to be flushed from the inside of the box: `php bin/magento c:f`.
 
 ## Varnish
 
@@ -193,8 +194,8 @@ If everything is running
 ## Redis
 
 Magento 2.1: http://devdocs.magento.com/guides/v2.1/config-guide/redis/redis-pg-cache.html
-Magento 2.2:
 
+Magento 2.2:
 ```
 php bin/magento setup:config:set --cache-backend=redis --cache-backend-redis-db=0
 php bin/magento setup:config:set --page-cache=redis --page-cache-redis-db=1
