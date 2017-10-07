@@ -5,5 +5,5 @@ profiler true
 developer true
 directory 'server'
 unison_guest 'magento2'
-unison_ignore 'Name {.DS_Store,.git,var/cache,var/page_cache,.idea}'
+unison_ignore 'Name {.DS_Store,var/cache,var/page_cache,.idea,dev/tests/integration/tmp,dev/tests/unit/tmp}'
 varnish_vcl 'false'
