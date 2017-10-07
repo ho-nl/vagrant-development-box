@@ -49,21 +49,12 @@ cp config.rb.dst config.rb
 ```
 c. Edit it to reflect your project settings
 ```ruby
-name 'projectname'
+name 'paracord'
 hostname name + '.box'
-domains %w(www.'+ name + '.box)
-profiler false
-developer true
 magento2 true
-php7 true
-linked_clone true
-cpu 2
-memory 2048
-unison_host '../src'
-unison_repeat 'watch'
-varnish true
+#varnish true
 #varnish_vcl 'magento2/varnish.vcl'
-xdebug false
+#xdebug true
 ```
 
 d. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
