@@ -62,7 +62,7 @@ Vagrant.configure("2") do |config|
     .shell_add('nfs.sh', :unison, true) # NFS server modifications to have proper permissions
     .shell_add('developer.sh', :developer) # Developer mode setting, depends on :developer configuration flag
     .shell_add('profiler.sh', :profiler) # Profiler installer, depends on :profiler configuration flag
-    .shell_add('xdebug.sh', :xdebug) # Xdebug installer, depends on :xdebug configuration flag
+    .shell_add('xdebug.sh') # Xdebug installer, depends on :xdebug configuration flag
     .shell_add('disable-varnish.sh', :varnish, true) # Varnish disabler, depends on :varnish inverted flag
     .shell_add('magento2.sh', :magento2) # M2 Nginx Config Flag, depends on :magento2 flag
     .shell_add('magento2-install.sh', [:magento2, :install]) # M2 Installer, depends on :magento2 and :install
@@ -140,7 +140,8 @@ Vagrant.configure("2") do |config|
         VAGRNAT_PHP_ETC_DIR: box_config.flag?(:php7) ? '/etc/php/7.0/' : '/etc/php5/',
         VAGRNAT_PHP_PACKAGE_PREFIX: box_config.flag?(:php7) ? 'php7.0' : 'php5',
         VAGRANT_PROJECT_DIR: project_dir,
-        VAGRANT_HOST_PUBLIC_KEY: public_key
+        VAGRANT_HOST_PUBLIC_KEY: public_key,
+        VAGRANT_XDEBUG: box_config.get(:xdebug)
     }
   end
 
