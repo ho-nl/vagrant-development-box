@@ -91,7 +91,7 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `unison_ignore` - Which files won't be used with updating changes with Unison (default `Name {.DS_Store,.git,var}`)
 * `unison_host` - Relative path from this vagrant folder to the source of the root of the installation. (default: `../src`)
 * `unison_guest` (default: `public`)
-* `unison_repeat` (default: `5`) Unison repeat mode, can be a number in seconds or 'watch'
+* `unison_repeat` (default: `watch`) Unison repeat mode, can be a number in seconds or 'watch'
 * `xdebug` Install xdebug? (default: `false`)
 * `forward_port` Forward port 80 to 8080 on host (default: `false`) 
 
