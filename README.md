@@ -227,3 +227,17 @@ By default this box will try to set the unison_guest folder to the magento2 pub 
 ## Need to run modman deploy in vagrant box
 
 The symlinks created on your host machine won't work in the vagrant box. This will result in errors with finding files or (when you use PHP7) a error in layout.php (because the Inchoo_PHP7 module was not applied correctly). Run `modman deploy-all --force` in your vagrant box to fix these issues.
+
+## Error: The archive file is missing on some hosts.
+
+When trying to use unison sync files between your machine and your vagrant box you might get a error that some archive files are missing. This happens mostly when you removed/changed/updated/moved your vagrant box. The error tells you what archive file is giving the issue, for example:
+```
+atal error: Warning: inconsistent state.  
+The archive file is missing on some hosts.
+For safety, the remaining copies should be deleted.
+  Archive ard815862d1c3d858683fe30cd114e54e4 on host name.local should be DELETED
+  Archive arc673d39eaeb32660a3e4c5296436adbf on host totalplants is MISSING
+```
+In this case the archive file `ard815862d1c3d858683fe30cd114e54e4` should be deleted. The local files are archived in `~/Library/Application\ Support/Unison/`.
+
+Sometimes the archive should be deleted on your vagrant machine, these archive files can be found in `/data/web/.unison` 
