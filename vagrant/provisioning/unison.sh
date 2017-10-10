@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! type "unison" > /dev/null; then
+if ! type "unison-fsmonitor" > /dev/null; then
 
     apt-get install python-software-properties
     add-apt-repository ppa:avsm/ppa
