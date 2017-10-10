@@ -35,19 +35,13 @@ d. [VirtualBox](https://www.virtualbox.org/) installed
 
 # Getting Started
 
-a. Create the following folder structure:
-```
-myproject/src
-myproject/vagrant
-```
-b. Copy the vagrant box
+a. Copy the vagrant box to your local environment in the root without pushing vagrant to the project repository
 ```
 cd myproject
 git clone git@github.com:ho-nl/vagrant-development-box.git vagrant
-cd vagrant
 cp config.rb.dst config.rb
 ```
-c. Edit it to reflect your project settings
+b. Edit it to reflect your project settings
 ```ruby
 name 'paracord'
 hostname name + '.box'
@@ -57,7 +51,7 @@ magento2 true
 #xdebug true
 ```
 
-d. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
+c. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
 
 <img width="613" alt="schermafbeelding 2017-09-30 om 14 57 29" src="https://user-images.githubusercontent.com/1244416/31045958-bb833756-a5ef-11e7-918b-6529dbc8480e.png">
 
