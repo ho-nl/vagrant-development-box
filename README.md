@@ -130,7 +130,7 @@ The filesystem of your host system must contain all files for PHPStorm be able t
 
 To achieve this, we use Unison. From the vagrant folder, run the following.
 ```
-vagrant vagrant unison-sync-polling
+vagrant unison-sync-polling
 ```
 
 *You always need to enable this when working with the box, or else the local changes wont be made in the box.*
