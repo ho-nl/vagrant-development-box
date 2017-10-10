@@ -70,6 +70,7 @@ Vagrant.configure("2") do |config|
     .shell_add('shell.sh', :shell) # Fish shell installer, depends on :shell flag
     .shell_add('unison.sh', :unison)
     .shell_add('ioncube.sh', :ioncube) # IonCube installer shell script, depends on :ioncube flag
+    .shell_add('ssh_key.sh')
     .shell_add('hello.sh') # Final message with connection instructions
 
   # Loads config.rb from the same directory where Vagrantfile is in
@@ -125,6 +126,7 @@ Vagrant.configure("2") do |config|
 
   # Automatically upload the users id_rsa.pub to the box
   public_key_path = File.join(Dir.home, ".ssh", "id_rsa.pub")
+
   if File.exist?(public_key_path)
     public_key = IO.read(public_key_path)
   end
