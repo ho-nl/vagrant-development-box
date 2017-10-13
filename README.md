@@ -52,6 +52,7 @@ c. Edit it to reflect your project settings
 name 'paracord'
 hostname name + '.box'
 magento2 true
+#unison_guest 'public' #when magento 1
 #varnish true
 #varnish_vcl 'magento2/varnish.vcl'
 #xdebug true
