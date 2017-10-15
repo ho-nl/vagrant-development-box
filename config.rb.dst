@@ -12,3 +12,5 @@ unison_guest 'magento2'
 unison_ignore 'Name {.DS_Store,var/cache,var/page_cache,.idea,dev/tests/integration/tmp,dev/tests/unit/tmp}'
 varnish_vcl 'false'
 php7 true
+cpu 4
+memory 2048
