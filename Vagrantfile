@@ -64,6 +64,7 @@ Vagrant.configure("2") do |config|
     .shell_add('profiler.sh', :profiler) # Profiler installer, depends on :profiler configuration flag
     .shell_add('xdebug.sh') # Xdebug installer, depends on :xdebug configuration flag
     .shell_add('php-show-errors.sh') # Show errors while starting up PHP instead having to read log files
+    .shell_add('bash-alias.sh') # Added Bash aliases
     .shell_add('nginx-rate-limiting.sh') # The host shouldnt be rate limited
     .shell_add('disable-varnish.sh', :varnish, true) # Varnish disabler, depends on :varnish inverted flag
     .shell_add('magento2.sh', :magento2) # M2 Nginx Config Flag, depends on :magento2 flag
