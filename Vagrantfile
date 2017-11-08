@@ -164,7 +164,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :forwarded_port, guest: 80, host: 8080
   end
 
-  config.vm.define 'hypernode' do |node|
+  config.vm.define box_config.get(:name) do |node|
     node.vm.hostname = box_config.get(:hostname)
     node.vm.network :private_network, auto_network: true
     node.hostmanager.aliases = box_config.get(:domains)
