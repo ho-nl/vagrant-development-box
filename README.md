@@ -194,6 +194,9 @@ php bin/magento setup:config:set --page-cache=redis --page-cache-redis-db=1
 php bin/magento setup:config:set --session-save=redis --session-save-redis-db=2
 ```
 
+### Make Redis accessible from outside your box:
+`sudo vi /etc/redis/redis.conf`, replace `bind 127.0.0.1` with `bind 0.0.0.0`. Restart `sudo service redis-server restart`.
+
 ## Sphinx
 
 By default the `searchd` is installed so you can used.
