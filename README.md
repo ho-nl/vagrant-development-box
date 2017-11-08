@@ -220,6 +220,8 @@ By default this box will try to set the unison_guest folder to the magento2 pub 
 
 The symlinks created on your host machine won't work in the vagrant box. This will result in errors with finding files or (when you use PHP7) a error in layout.php (because the Inchoo_PHP7 module was not applied correctly). Run `modman deploy-all --force` in your vagrant box to fix these issues.
 
+# Common issues
+
 ## Error: The archive file is missing on some hosts.
 
 When trying to use unison sync files between your machine and your vagrant box you might get a error that some archive files are missing. This happens mostly when you removed/changed/updated/moved your vagrant box. The error tells you what archive file is giving the issue, for example:
@@ -233,3 +235,23 @@ For safety, the remaining copies should be deleted.
 In this case the archive file `ard815862d1c3d858683fe30cd114e54e4` should be deleted. The local files are archived in `~/Library/Application\ Support/Unison/`.
 
 Sometimes the archive should be deleted on your vagrant machine, these archive files can be found in `/data/web/.unison` 
+
+## Box size is much larger than necessary (2-3x file size reduction)
+
+Make sure `vmware-vdiskmanager` is available:
+
+```bash
+brew install caskroom/cask/vmware-fusion
+```
+Do this in your box:
+
+```bash
+sudo dd if=/dev/zero of=wipefile bs=1024x1024; rm wipefile
+```
+
+Do this outside your box:
+```
+vagrant halt
+cd ~/VirtualBox\ VMs/yourboxnamehere/Snapshots
+vmware-vdiskmanager -k \{somestringhere\}.vmdk #pro tip: press tab after you entered vmware-vdiskmanager and the file will be autofilled
+```
