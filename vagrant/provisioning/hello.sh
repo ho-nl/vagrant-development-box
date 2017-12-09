@@ -1,8 +1,8 @@
 #!/bin/bash
 
+echo "";
+echo "";
 echo "
-.
-.
 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥
 🔥                                                               🔥
 🔥  #########     #######        #         #######    ##    ##   🔥
@@ -14,16 +14,19 @@ echo "
 🔥                          Vagrant Box                          🔥
 🔥                                                               🔥
 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥 🔥
-.
-.
 "
+echo "";
+echo "";
 
-echo "You can login now with in order to use your box:"
 echo "🙏  \$ ssh ${VAGRANT_USER}@${VAGRANT_HOSTNAME}"
-echo "To access database, you can use the following credentials in your app:"
+echo "";
+
 HOME_DIR=$(getent passwd ${VAGRANT_USER} | cut -d ':' -f6)
 MYSQLPASSWORD=$(awk -F "=" '/password/ {print $2}' ${HOME_DIR}/.my.cnf | sed -e 's/^[ \t]*//')
+echo "🙏  mysql host:${VAGRANT_HOSTNAME} username:${VAGRANT_USER} password:${MYSQLPASSWORD}"
+echo "🙏  http://${VAGRANT_HOSTNAME} (✅  will show a 403 on a fresh box)";
 
-echo "🙏  MySQL Hostname: ${VAGRANT_HOSTNAME}"
-echo "🙏  MySQL Username: ${VAGRANT_USER}"
-echo "🙏  MySQL Password: $MYSQLPASSWORD"
+echo "";
+
+echo "Setup M2: https://github.com/ho-nl/vagrant-development-box#magento-2-configuration";
+echo "Setup M1: https://github.com/ho-nl/vagrant-development-box#magento-1-configuration";
