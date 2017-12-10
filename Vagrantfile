@@ -58,13 +58,13 @@ Vagrant.configure("2") do |config|
   # Base hypernode provisioner
   box_config
     .shell_add('hypernode.sh')
-    .shell_add('composer.sh')
     .shell_add('nfs.sh', :unison, true)
     .shell_add('developer.sh', :developer)
     .shell_add('mysql_version.sh')
     .shell_add('php_version.sh')
-    .shell_add('xdebug.sh')
-    .shell_add('php-show-errors.sh')
+    .shell_add('php_show_errors.sh')
+    .shell_add('php_composer.sh')
+    .shell_add('php_xdebug.sh')
     .shell_add('bash-alias.sh')
     .shell_add('nginx-rate-limiting.sh')
     .shell_add('disable-varnish.sh', :varnish, true) # Varnish disabler, depends on :varnish inverted flag

@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
 
+function program_is_installed {
+  # set to 1 initially
+  local return_=1
+  # set to 0 if not found
+  type $1 >/dev/null 2>&1 || { local return_=0; }
+  # return value
+  echo "$return_"
+}
+
 PHP_V=$(php -v|awk '{ print $0 }'|awk -F\, '{ print $1 }')
 CURRENT_PHP_VERSION=${PHP_V:4:3}
 sudo service "php${CURRENT_PHP_VERSION}-fpm" stop
 
 if [ $VAGRANT_PHP_VERSION == "7.1" ]; then
-    if [ hash php7.1 2>/dev/null ]; then
-        echo "Installing PHP 7.1"
+    if [ $(program_is_installed php7.1) == 0 ]; then
+        echo "🔥  Installing PHP 7.1"
 
         sudo apt-get install -y python-software-properties
         sudo add-apt-repository -y ppa:ondrej/php
@@ -20,8 +29,8 @@ if [ $VAGRANT_PHP_VERSION == "7.1" ]; then
 fi
 
 if [ $VAGRANT_PHP_VERSION == "7.2" ]; then
-    if [ hash php7.2 2>/dev/null ]; then
-        echo "Installing PHP 7.2"
+    if [ $(program_is_installed php7.2) == 0 ]; then
+        echo "🔥  Installing PHP 7.2"
 
         sudo apt-get install -y python-software-properties
         sudo add-apt-repository -y ppa:ondrej/php
@@ -35,7 +44,7 @@ if [ $VAGRANT_PHP_VERSION == "7.2" ]; then
 fi
 
 # Start the correct FPM daemon
-echo "Switching to PHP $VAGRANT_PHP_VERSION"
+echo "🔥  Switching to PHP $VAGRANT_PHP_VERSION"
 sudo hypernode-switch-php $VAGRANT_PHP_VERSION &>/dev/null
 sudo service "php$VAGRANT_PHP_VERSION-fpm" start
 
