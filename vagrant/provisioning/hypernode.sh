@@ -42,9 +42,6 @@ if ! find /data/web/public/ -mindepth 1 -name '*.php' -name '*.html' | read; the
     chown -R $user:$user /data/web/public
 fi
 
-# Start the correct FPM daemon
-command -v hypernode-switch-php >/dev/null 2>&1 && hypernode-switch-php $php_version 2>&1 || /bin/true
-
 # @todo investigate what the memory management part settings do and what the best solution might be.
 # delete cgroups for memory
 truncate -s 0 /etc/cgrules.conf

@@ -23,13 +23,12 @@ require_relative 'vagrant/inline/config'
 VagrantApp::Config
   .option(:varnish, false) # If varnish needs to be enabled
   .option(:varnish_vcl, false) # Path to your varnish vcl file
-  .option(:profiler, false) # Is profiler needs to be installed
   .option(:xdebug, false) # Is xdebug needs to be installed
   .option(:developer, false) # Is developer mode should be enabled
   .option(:magento2, false) # Is it Magento 2.0
   .option(:install, false) # Install Magento? (for now only 2.0)
   .option(:shell, false) # Shell script?
-  .option(:php7, false) # Is it PHP7?
+  .option(:php_version, '7.0') # PHP version
   .option(:mysql_version, '5.6') # MySQL version
   .option(:ioncube, false) # Flag for installing IonCube loader PHP module
   .option(:name, '') # Name
@@ -62,8 +61,8 @@ Vagrant.configure("2") do |config|
     .shell_add('composer.sh')
     .shell_add('nfs.sh', :unison, true)
     .shell_add('developer.sh', :developer)
-    .shell_add('profiler.sh', :profiler)
     .shell_add('mysql_version.sh')
+    .shell_add('php_version.sh')
     .shell_add('xdebug.sh')
     .shell_add('php-show-errors.sh')
     .shell_add('bash-alias.sh')
@@ -140,13 +139,11 @@ Vagrant.configure("2") do |config|
         VAGRANT_USER: box_config.get(:user),
         VAGRANT_GROUP: box_config.get(:group),
         VAGRANT_HOSTNAME: box_config.get(:hostname),
-        VAGRANT_FPM_SERVICE: box_config.flag?(:php7) ? 'php7.0-fpm' : 'php5-fpm',
-        VAGRNAT_PHP_ETC_DIR: box_config.flag?(:php7) ? '/etc/php/7.0/' : '/etc/php5/',
-        VAGRNAT_PHP_PACKAGE_PREFIX: box_config.flag?(:php7) ? 'php7.0' : 'php5',
         VAGRANT_PROJECT_DIR: project_dir,
         VAGRANT_HOST_PUBLIC_KEY: public_key,
         VAGRANT_XDEBUG: box_config.get(:xdebug),
-        VAGRANT_MYSQL_VERSION: box_config.get(:mysql_version)
+        VAGRANT_MYSQL_VERSION: box_config.get(:mysql_version),
+        VAGRANT_PHP_VERSION: box_config.get(:php_version)
     }
   end
 

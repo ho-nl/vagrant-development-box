@@ -1,7 +1,6 @@
 name 'magento-hypernode'
 hostname name + '.box'
 domains %w(www.magento-hypernode.box)
-profiler false
 developer true
 linked_clone true
 unison_host '../src'
@@ -11,6 +10,5 @@ varnish false
 unison_guest 'magento2'
 unison_ignore 'Name {.DS_Store,var/cache,var/page_cache,.idea,dev/tests/integration/tmp,dev/tests/unit/tmp}'
 varnish_vcl 'false'
-php7 true
 cpu 4
 memory 2048
