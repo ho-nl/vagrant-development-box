@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Disabling Varnish caching..."
+echo "🔥  Ensuring Varnish is disabled"
 
 # Create a vcl that tells Varnish to cache nothing
 cat > /etc/varnish/default.vcl <<- EOM

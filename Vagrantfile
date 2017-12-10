@@ -37,6 +37,7 @@ VagrantApp::Config
   .option(:domains, []) # Domain list
   .option(:cpu, 1) # Number of dedicated CPU
   .option(:memory, 1024) # Number of dedicated memory in MB
+  .option(:memory_production, false) # Run in production memory mode
   .option(:user, 'app') # User name for share
   .option(:group, 'app') # Group name for share
   .option(:uid, Process.euid) # User ID for mapping
@@ -66,7 +67,8 @@ Vagrant.configure("2") do |config|
     .shell_add('php_composer.sh')
     .shell_add('php_xdebug.sh')
     .shell_add('bash-alias.sh')
-    .shell_add('nginx-rate-limiting.sh')
+    .shell_add('memory_management.sh')
+    .shell_add('nginx_rate_limiting.sh')
     .shell_add('disable-varnish.sh', :varnish, true) # Varnish disabler, depends on :varnish inverted flag
     .shell_add('magento2.sh', :magento2) # M2 Nginx Config Flag, depends on :magento2 flag
     .shell_add('magento2-install.sh', [:magento2, :install]) # M2 Installer, depends on :magento2 and :install
@@ -143,7 +145,8 @@ Vagrant.configure("2") do |config|
         VAGRANT_HOST_PUBLIC_KEY: public_key,
         VAGRANT_XDEBUG: box_config.get(:xdebug),
         VAGRANT_MYSQL_VERSION: box_config.get(:mysql_version),
-        VAGRANT_PHP_VERSION: box_config.get(:php_version)
+        VAGRANT_PHP_VERSION: box_config.get(:php_version),
+        VAGRANT_CGROUP_ENABLED: box_config.get(:memory_production)
     }
   end
 

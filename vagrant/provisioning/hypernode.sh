@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+echo "🔥  Setting base config"
+
 truncate -s 0 /var/mail/app
 
 user='app'
@@ -43,7 +45,4 @@ if ! find /data/web/public/ -mindepth 1 -name '*.php' -name '*.html' | read; the
 fi
 
 # @todo investigate what the memory management part settings do and what the best solution might be.
-# delete cgroups for memory
 truncate -s 0 /etc/cgrules.conf
-cgdelete -r limited || true
-

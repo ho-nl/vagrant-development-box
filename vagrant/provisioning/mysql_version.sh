@@ -8,6 +8,8 @@ if [ $VAGRANT_MYSQL_VERSION == '5.7' ]; then
     if [ ${MYSQL_CURRENT_VERSION:0:3} == '5.7' ]; then
         echo "MySQL version is already 5.7"
     else
+        echo "🔥  Upgrading to MySQL $VAGRANT_MYSQL_VERSION (downgrade not possible)"
+
         MYSQL_PASSWORD=$(awk -F "=" '/password/ {print $2}' ${HOME_DIR}/.my.cnf | sed -e 's/^[ \t]*//')
 
         wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb

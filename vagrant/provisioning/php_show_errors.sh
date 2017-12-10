@@ -1,6 +1,8 @@
 PHP_V=$(php -v|awk '{ print $0 }'|awk -F\, '{ print $1 }')
 PHP_VERSION=${PHP_V:4:3}
 
+echo "🔥  Ensuring php errors are shown in the browser"
+
 for i in fpm cli; do
     CONFIG="display_errors = On
 display_startup_errors = On
