@@ -1,3 +1,5 @@
+# Disable all rate limiting for connections from the host.
+
 AS_USER="sudo -u ${VAGRANT_USER}"
 HOME_DIR=$(getent passwd ${VAGRANT_USER} | cut -d ':' -f6)
 

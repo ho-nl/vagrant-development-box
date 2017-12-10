@@ -30,6 +30,7 @@ VagrantApp::Config
   .option(:install, false) # Install Magento? (for now only 2.0)
   .option(:shell, false) # Shell script?
   .option(:php7, false) # Is it PHP7?
+  .option(:mysql_version, '5.6') # MySQL version
   .option(:ioncube, false) # Flag for installing IonCube loader PHP module
   .option(:name, '') # Name
   .option(:linked_clone, false) # Use a linked base box clone
@@ -58,14 +59,15 @@ Vagrant.configure("2") do |config|
   # Base hypernode provisioner
   box_config
     .shell_add('hypernode.sh')
-    .shell_add('composer.sh') # Composer installer
-    .shell_add('nfs.sh', :unison, true) # NFS server modifications to have proper permissions
-    .shell_add('developer.sh', :developer) # Developer mode setting, depends on :developer configuration flag
-    .shell_add('profiler.sh', :profiler) # Profiler installer, depends on :profiler configuration flag
-    .shell_add('xdebug.sh') # Xdebug installer, depends on :xdebug configuration flag
-    .shell_add('php-show-errors.sh') # Show errors while starting up PHP instead having to read log files
-    .shell_add('bash-alias.sh') # Added Bash aliases
-    .shell_add('nginx-rate-limiting.sh') # The host shouldnt be rate limited
+    .shell_add('composer.sh')
+    .shell_add('nfs.sh', :unison, true)
+    .shell_add('developer.sh', :developer)
+    .shell_add('profiler.sh', :profiler)
+    .shell_add('mysql_version.sh')
+    .shell_add('xdebug.sh')
+    .shell_add('php-show-errors.sh')
+    .shell_add('bash-alias.sh')
+    .shell_add('nginx-rate-limiting.sh')
     .shell_add('disable-varnish.sh', :varnish, true) # Varnish disabler, depends on :varnish inverted flag
     .shell_add('magento2.sh', :magento2) # M2 Nginx Config Flag, depends on :magento2 flag
     .shell_add('magento2-install.sh', [:magento2, :install]) # M2 Installer, depends on :magento2 and :install
@@ -89,13 +91,10 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  if box_config.flag?(:php7)
-    config.vm.box = 'hypernode_php7'
-    config.vm.box_url = 'http://vagrant.hypernode.com/customer/php7/catalog.json'
-  else
-    config.vm.box = 'hypernode_php5'
-    config.vm.box_url = 'http://vagrant.hypernode.com/customer/php5/catalog.json'
-  end
+  config.vm.box = 'hypernode_xenial'
+  config.vm.box_url = 'http://vagrant.hypernode.com/customer/xenial/catalog.json'
+
+  config.vm.provision "file", source: File.join(current_file.dirname, 'vagrant/resources'), destination: "vagrant-resources"
 
   if box_config.flag?(:linked_clone)
     config.vm.provider :virtualbox do |v|
@@ -146,7 +145,8 @@ Vagrant.configure("2") do |config|
         VAGRNAT_PHP_PACKAGE_PREFIX: box_config.flag?(:php7) ? 'php7.0' : 'php5',
         VAGRANT_PROJECT_DIR: project_dir,
         VAGRANT_HOST_PUBLIC_KEY: public_key,
-        VAGRANT_XDEBUG: box_config.get(:xdebug)
+        VAGRANT_XDEBUG: box_config.get(:xdebug),
+        VAGRANT_MYSQL_VERSION: box_config.get(:mysql_version)
     }
   end
 

@@ -49,7 +49,7 @@ xdebug.remote_enable=1
 xdebug.remote_host=33.33.33.1
 xdebug.remote_port=9000
 "
-        rm ${PHP_DIR}${i}/conf.d/10-xdebug.ini;
+        rm -f ${PHP_DIR}${i}/conf.d/10-xdebug.ini;
         touch ${PHP_DIR}${i}/conf.d/10-xdebug.ini
         echo -n "$EXTENSION_CONFIG" > ${PHP_DIR}${i}/conf.d/10-xdebug.ini
 
@@ -67,7 +67,7 @@ else
 
     for i in fpm cli; do
         if [ -f ${PHP_DIR}${i}/conf.d/10-xdebug.ini ]; then
-            rm ${PHP_DIR}${i}/conf.d/10-xdebug.ini
+            rm -f ${PHP_DIR}${i}/conf.d/10-xdebug.ini
         fi
 
     done
