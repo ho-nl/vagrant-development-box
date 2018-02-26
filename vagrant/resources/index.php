@@ -1,0 +1,1 @@
+Vagrant box successfully installed.

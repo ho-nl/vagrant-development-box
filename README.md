@@ -45,9 +45,9 @@ b. Copy the vagrant box
 cd myproject
 git clone git@github.com:ho-nl/vagrant-development-box.git vagrant
 cd vagrant
-cp config.rb.dst config.rb
 ```
-c. Edit it to reflect your project settings
+
+c. Create a config.rb file with your project settings
 ```ruby
 name 'paracord'
 hostname name + '.box'
@@ -74,13 +74,13 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `domains` - list of additional domain names for your project 
 * `varnish` - enable or disable varnish for your project (can be always enabled for Magento 2, can be disabled in the application) (default: `false`)
 * `varnish_vcl` - relative path to the varnish file that is to be used, e.g. 'magento2/varnish.vcl' (default: null)
-* `profiler` - enable or disable tideways-profiler (default: `false`)
 * `developer` - enable or disable developer mode in Magento (default: `false`)
 * `magento2` - Magento 2.0 installment? (default: `false`)
 * `install` - Shall Magento be installed? (default: `false`, only Magento 2.0 installation supported)
 * `shell` - Install FishShell? (default: `false`)
-* `php7` - PHP7 instead of PHP5? (default: `false`)
-* `linked_clone` - Link a master box instead of importing, should reduce disk space ussage (default: `false`)
+* `php_version` - 5.5|5.6|7.0|7.1? (default: `7.0`)
+* `mysql_version` - 5.6|5.7? (only upgrades possible, default: `5.6`)
+* `linked_clone` - Link a master box instead of importing, should reduce disk space usage (default: `false`)
 * `cpu` - number of CPUs to dedicate to your VM (default: `1`)
 * `memory` - memory in MB to dedicate to your VM (default: `1024`)
 * `user` - User name for nfs share permissions (default: `app`)

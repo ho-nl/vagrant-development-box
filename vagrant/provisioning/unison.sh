@@ -2,20 +2,11 @@
 
 if ! type "unison-fsmonitor" > /dev/null; then
 
-    apt-get install python-software-properties
-    add-apt-repository ppa:avsm/ppa
-    apt-get update -y -f
-    apt-get install ocaml opam -y
+    echo "🔥  Ensuring Unison is installed"
 
-    mkdir -p /usr/src/unison/
-    cd /usr/src/unison/
-
-    wget https://www.seas.upenn.edu/~bcpierce/unison/download/releases/unison-2.48.4/unison-2.48.4.tar.gz -O unison.tar.gz
-    tar xzvf unison.tar.gz  --strip-components 1
-    make UISTYLE=text || true
-
-    chmod +x unison
-    mv unison /usr/bin/
+    sudo apt-get install python-software-properties
+    sudo add-apt-repository ppa:eugenesan/ppa -y
+    sudo apt-get install unison
 
     curl -L -o unison-fsmonitor https://github.com/TentativeConvert/Syndicator/raw/master/unison-binaries/unison-fsmonitor
 
