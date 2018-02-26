@@ -1,14 +1,26 @@
 {
-    "name": "ecomdev/fast-hypernode",
-    "description": "Fast Hypernode Project Setup",
-    "type": "project",
+    "name": "reach-digital/vagrant-development-box",
+    "description": "Reach Digital Vagrant box",
+    "type": "magento2-component",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Paul Hachmang",
+            "email": "paul@reachdigital.nl"
+        },
         {
             "name": "Ivan Chepurnyi",
             "email": "ivan.chepurnyi@ecomdev.org"
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {},
+    "extra": {
+        "map": [
+            ["vagrant", "vagrant"],
+            [".vagrant", ".vagrant"],
+            ["config.rb.dst", "config.rb.dst"],
+            ["VagrantFile", "VagrantFile"]
+        ]
+    }
 }

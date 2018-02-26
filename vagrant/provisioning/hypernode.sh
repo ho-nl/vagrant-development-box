@@ -40,7 +40,7 @@ fi
 
 # if the webroot is empty, place our default index.php which shows the settings
 if ! find /data/web/public/ -mindepth 1 -name '*.php' -o -name '*.html' | read; then
-    cp /home/vagrant/vagrant-resources/*.{php,js,css} /data/web/public/
+    cp /home/vagrant/vagrant-resources/index.php /data/web/public/
     chown -R $user:$user /data/web/public
 fi
 
