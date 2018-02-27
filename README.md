@@ -258,3 +258,8 @@ vagrant halt
 cd ~/VirtualBox\ VMs/yourboxnamehere/Snapshots
 vmware-vdiskmanager -k \{somestringhere\}.vmdk #pro tip: press tab after you entered vmware-vdiskmanager and the file will be autofilled
 ```
+
+## Error: The machine with the name 'hypernode' was not found configured for this Vagrant environment.
+This usually happens when you upgrade the vagrant box version from 1.x to 2.x or higher. The error occors becuase vagrant creates a new box with the correct project name but doesn't delete the old vagrant box. When you do the `vagrant up` command it tries to start all the boxes that are availble in the `vagrant/.vagrant` folder, which includes the hypernode box and which doesn't have a configuration after the update.
+
+Remove the hypernode box from `vagrant/.vagrant` and the error will disapear.
