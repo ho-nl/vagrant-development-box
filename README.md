@@ -137,7 +137,7 @@ You can directly connect to the vagrant box with the following credentials:
 ```
 host: your-project-name.box
 username: app
-password: as mentioned in vagrant up
+password: as mentioned in vagrant up/provision
 ```
 
 
