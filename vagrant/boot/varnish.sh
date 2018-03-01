@@ -10,6 +10,7 @@ service varnish restart
 sleep 1
 
 if ! [ ${VARNISH_VCL} == 'false' ]; then
+    echo "🔥  Loading varnish VLC ${VARNISH_VCL}"
     varnishadm vcl.load mag2 ${HOME_DIR}/${VARNISH_VCL}
     varnishadm vcl.use mag2
     varnishadm vcl.discard boot
