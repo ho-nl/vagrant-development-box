@@ -263,3 +263,28 @@ vmware-vdiskmanager -k \{somestringhere\}.vmdk #pro tip: press tab after you ent
 This usually happens when you upgrade the vagrant box version from 1.x to 2.x or higher. The error occors becuase vagrant creates a new box with the correct project name but doesn't delete the old vagrant box. When you do the `vagrant up` command it tries to start all the boxes that are availble in the `vagrant/.vagrant` folder, which includes the hypernode box and which doesn't have a configuration after the update.
 
 Remove the hypernode box from `vagrant/.vagrant` and the error will disapear.
+
+## Fatal error due to incompatible unison versions between host and guest
+
+```
+Fatal error: Received unexpected header from the server:
+ expected "Unison 2.51 with OCaml >= 4.01.2\n" but received "Unison 2.48\n\000\000\000\000\017",
+which differs at "Unison 2.4".
+```
+
+This can happen if the installed version of unison on the host is incompatible with the one in the box. If possible, upgrade unison inside your box.
+
+```bash
+cd my-project-dir/vagrant
+vagrant ssh
+sudo apt-get update && sudo apt list --upgradable
+sudo apt-get upgrade unison # If above command confirmed a new version is available
+```
+
+Else, switch to an older compatible version on the host with:
+
+```bash
+brew info unison # Show all installed versions
+brew switch unison 2.48.4 # Switch to appropriate version
+```
+
