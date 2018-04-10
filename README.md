@@ -288,3 +288,19 @@ brew info unison # Show all installed versions
 brew switch unison 2.48.4 # Switch to appropriate version
 ```
 
+This only works if an appropriate version was installed previously. If this is not the case, an older version of `unison` can be installed by looking up an older commit in the homebrew-core repository, and installing directly by URL, for example for version 2.48.15:
+
+```bash
+brew unlink unison # unlink currently active version
+brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/f5755fe4ccecb63c669d633f804428267d3bf3d1/Formula/unison.rb
+```
+
+Since the homebrew repository is not browsable on github due to its size, you will need to clone the repository and inspect it locally to find the right commit for the required version:
+
+```bash
+git clone git@github.com:Homebrew/homebrew-core.git
+cd homebrew-core
+git log -- Formula/unison.rb # May take a while
+```
+
+
