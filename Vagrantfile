@@ -43,7 +43,7 @@ VagrantApp::Config
   .option(:uid, Process.euid) # User ID for mapping
   .option(:gid, Process.egid) # Group ID for mapping
   .option(:directory, 'server') # Directory to be used as mount on host machine for NFS guest plugin
-  .option(:unison_host, 'project') # Directory for project code
+  .option(:unison_host, '../src') # Directory for project code
   .option(:unison_guest, 'project') # Directory for project code
   .option(:unison_ignore, 'Name {.DS_Store,.git}') # Unison ignore pattern
   .option(:unison_repeat, '1') # Unison repeat mode, can be a number in seconds or 'watch'
