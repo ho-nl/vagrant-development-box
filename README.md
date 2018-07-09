@@ -303,4 +303,10 @@ cd homebrew-core
 git log -- Formula/unison.rb # May take a while
 ```
 
+## 'permission denied' on npm install or npm install -g
+Change the prefix of npm to solve this:
+```bash
+npm config set prefix '/data/web/.npm-global'
+npm install -g gulp grunt grunt-cli polymer-cli
+```
 
