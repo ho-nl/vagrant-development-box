@@ -166,6 +166,7 @@ Vagrant.configure("2") do |config|
 
   if box_config.flag?(:forward_port)
     config.vm.network :forwarded_port, guest: 80, host: 8080
+    config.vm.network :forwarded_port, guest: 3000, host: 3000
   end
 
   config.vm.define box_config.get(:name) do |node|
