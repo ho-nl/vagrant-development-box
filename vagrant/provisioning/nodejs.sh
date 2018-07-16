@@ -18,7 +18,5 @@ if ! [ -d /data/web/.npm-global ]; then
     npm config set prefix '/data/web/.npm-global'
 fi
 
-if ! [ -f /data/web/.bash_profile ]; then
-    echo "🔥  Adding nodejs packages to .bash_profile"
-    echo 'export PATH=~/.npm-global/bin:$PATH' >>/data/web/.bash_profile
-fi
+echo "🔥  Adding nodejs packages to .bash_profile"
+echo 'export PATH=~/.npm-global/bin:$PATH' >>/data/web/.bash_profile
