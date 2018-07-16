@@ -66,6 +66,7 @@ Vagrant.configure("2") do |config|
     .shell_add('php_show_errors.sh')
     .shell_add('php_composer.sh')
     .shell_add('php_xdebug.sh')
+    .shell_add('bash-profile.sh')
     .shell_add('bash-alias.sh')
     .shell_add('memory_management.sh')
     .shell_add('nginx_rate_limiting.sh')
