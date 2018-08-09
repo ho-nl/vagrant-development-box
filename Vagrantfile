@@ -69,6 +69,7 @@ Vagrant.configure("2") do |config|
     .shell_add('bash-alias.sh')
     .shell_add('memory_management.sh')
     .shell_add('nginx_rate_limiting.sh')
+    .shell_add('nginx_aoejscsststamp.sh')
     .shell_add('disable-varnish.sh', :varnish, true) # Varnish disabler, depends on :varnish inverted flag
     .shell_add('magento2.sh', :magento2) # M2 Nginx Config Flag, depends on :magento2 flag
     .shell_add('magento2-install.sh', [:magento2, :install]) # M2 Installer, depends on :magento2 and :install
