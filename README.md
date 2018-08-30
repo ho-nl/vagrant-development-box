@@ -52,6 +52,7 @@ c. Create a config.rb file with your project settings
 name 'paracord'
 hostname name + '.box'
 magento2 true
+#php_version 7.1
 #unison_guest 'public' #when magento 1
 #varnish true
 #varnish_vcl 'magento2/varnish.vcl'
