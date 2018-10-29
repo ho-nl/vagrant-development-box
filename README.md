@@ -47,7 +47,7 @@ git clone git@github.com:ho-nl/vagrant-development-box.git vagrant
 cd vagrant
 ```
 
-c. Create a config.rb file with your project settings
+c. Create a config.rb file in you /src folder with your project settings
 ```ruby
 name 'paracord'
 hostname name + '.box'
