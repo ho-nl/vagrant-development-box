@@ -53,6 +53,7 @@ name 'paracord'
 hostname name + '.box'
 magento2 true
 #php_version 7.1
+#mysql_version 5.7 #when magento >2.3
 #unison_guest 'public' #when magento 1
 #varnish true
 #varnish_vcl 'magento2/varnish.vcl'
