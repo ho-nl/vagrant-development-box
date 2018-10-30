@@ -1,14 +1,11 @@
-name 'magento-hypernode'
+name 'vagrant-development'
 hostname name + '.box'
-domains %w(www.magento-hypernode.box)
-developer true
-linked_clone true
-unison_host '../src'
-unison_repeat 'watch'
-directory 'server'
-varnish false
-unison_guest 'magento2'
-unison_ignore 'Name {.DS_Store,var/cache,var/page_cache,.idea,dev/tests/integration/tmp,dev/tests/unit/tmp}'
-varnish_vcl 'false'
-cpu 4
-memory 2048
+# domains [
+#  'vagrant-development.dev',
+#  'vagrant-development.test',
+#]
+php_version 7.1
+mysql_version 5.6 #use 5.7 for Magento > 2.3
+# unison_guest 'public' #when magento 1
+# varnish true
+# unison_ignore 'Name {.DS_Store,var/cache,var/page_cache,.idea,dev/tests/integration/tmp,dev/tests/unit/tmp}'
