@@ -78,6 +78,7 @@ Vagrant.configure("2") do |config|
     .shell_add('ioncube.sh', :ioncube) # IonCube installer shell script, depends on :ioncube flag
     .shell_add('ssh_key.sh')
     .shell_add('nodejs.sh')
+    .shell_add('sudoers.sh')
     .shell_add('hello.sh') # Final message with connection instructions
 
   # Loads config.rb from the same directory where Vagrantfile is in
