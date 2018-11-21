@@ -140,7 +140,13 @@ host: your-project-name.box
 username: app
 password: as mentioned in vagrant up/provision
 ```
+## Debugging e-mail sending using MailHog
 
+By default, `mailhog` is installed in your vagrant box. This runs as a daemon and will intercept all e-mail being sent from your Magento setup (if configured to deliver e-mail locally on port `1025`) and present it through a convenient web-interface on port `8025`, i.e. `http://your.box:8025`).
+
+Due to an issue with the `mailhog` service not starting on its own some additional steps are currently required to run this as a service: https://github.com/ho-nl/vagrant-development-box/issues/77
+
+Alternatively you can just run `mailhog` from the command line and let it run in the foreground when needed.
 
 # Magento 2 configuration
 
