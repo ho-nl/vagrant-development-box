@@ -113,7 +113,8 @@ Vagrant.configure("2") do |config|
     v.cpus =  box_config.get(:cpu)
     v.customize [
       "modifyvm", :id,
-      "--paravirtprovider", "kvm" # for linux guest
+      "--paravirtprovider", "kvm", # for linux guest
+      "--audio", "none"
     ]
   end
 
