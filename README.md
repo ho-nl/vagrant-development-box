@@ -139,7 +139,7 @@ host: your-project-name.box
 username: app
 password: as mentioned in vagrant up/provision
 ```
-## Enableling browser-sync
+## Enabling browser-sync
 
 You can setup port-forwarding to enable browser-sync with gulp. This enables you to test your development environment on your mobile phone or other PC.
 
