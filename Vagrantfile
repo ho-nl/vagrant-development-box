@@ -69,6 +69,7 @@ Vagrant.configure("2") do |config|
     .shell_add('bash-alias.sh')
     .shell_add('memory_management.sh')
     .shell_add('nginx_rate_limiting.sh')
+    .shell_add('nginx_aoejscsststamp.sh')
     .shell_add('disable-varnish.sh', :varnish, true) # Varnish disabler, depends on :varnish inverted flag
     .shell_add('magento2.sh', :magento2) # M2 Nginx Config Flag, depends on :magento2 flag
     .shell_add('magento2-install.sh', [:magento2, :install]) # M2 Installer, depends on :magento2 and :install
@@ -78,12 +79,14 @@ Vagrant.configure("2") do |config|
     .shell_add('ioncube.sh', :ioncube) # IonCube installer shell script, depends on :ioncube flag
     .shell_add('ssh_key.sh')
     .shell_add('nodejs.sh')
+    .shell_add('sudoers.sh')
     .shell_add('hello.sh') # Final message with connection instructions
 
   # Loads config.rb from the same directory where Vagrantfile is in
   box_config.load(File.join(current_file.dirname, 'config.rb.dst'))
   box_config.load(File.join(current_file.dirname, 'config.rb'))
   box_config.load(File.join(current_file.dirname, '../config.rb'))
+  box_config.load(File.join(current_file.dirname, '../src/config.rb'))
 
   AutoNetwork.default_pool = box_config.get(:network)
 
@@ -111,7 +114,8 @@ Vagrant.configure("2") do |config|
     v.cpus =  box_config.get(:cpu)
     v.customize [
       "modifyvm", :id,
-      "--paravirtprovider", "kvm" # for linux guest
+      "--paravirtprovider", "kvm", # for linux guest
+      "--audio", "none"
     ]
   end
 
