@@ -140,6 +140,18 @@ host: your-project-name.box
 username: app
 password: as mentioned in vagrant up/provision
 ```
+## Enabling browser-sync
+
+You can setup port-forwarding to enable browser-sync with gulp. This enables you to test your development environment on your mobile phone or other PC.
+
+By default the port-forwarding is setup for port 3000, this is the default port gulp uses to setup browsersync. If this is different because of reasons you can edit this in the `Vagrantfile`.
+
+Change your `config.rb` and add `forward_port true` to your config. Provision and restart your box. During the box init you should see messages that port 3000 is being setup for your box.
+
+Next start gulp in your box and you should be able to connect to your box using your hostname or ip-adres (for example: nick.local:3000).
+
+Keep in mind that you can't have two boxes running at the same time with `forward_port true` because these would clash with each other. Also keep in mind that you should use the IP address when you want to test on Android.
+
 ## Debugging e-mail sending using MailHog
 
 By default, `mailhog` is installed in your vagrant box. This runs as a daemon and will intercept all e-mail being sent from your Magento setup (if configured to deliver e-mail locally on port `1025`) and present it through a convenient web-interface on port `8025`, i.e. `http://your.box:8025`).
