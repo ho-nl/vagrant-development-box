@@ -67,9 +67,6 @@ Please note: it will show some red errors but you can ignore that, those are mos
 
 ## Configuration Options
 
-<details>
-  <summary>Expand to view all available options</summary>
-	
 * `name` - name of your node
 * `hostname` - default project hostname
 * `domains` - list of additional domain names for your project 
