@@ -67,9 +67,6 @@ Please note: it will show some red errors but you can ignore that, those are mos
 
 ## Configuration Options
 
-<details>
-  <summary>Expand to view all available options</summary>
-	
 * `name` - name of your node
 * `hostname` - default project hostname
 * `domains` - list of additional domain names for your project 
@@ -106,8 +103,6 @@ shell_add 'some-custom-shell-script.sh'
 # Will provision only if PHP7 flag is turned on
 shell_add 'some-custom-script-for-php7.sh', :php7  
 ```
-
-</details>
 
 ## Connecting to your Vagrant box
 
