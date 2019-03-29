@@ -104,8 +104,6 @@ shell_add 'some-custom-shell-script.sh'
 shell_add 'some-custom-script-for-php7.sh', :php7  
 ```
 
-</details>
-
 ## Connecting to your Vagrant box
 
 There are two ways to connect to your Vagrant box:
