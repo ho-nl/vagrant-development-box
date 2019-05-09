@@ -51,6 +51,7 @@ VagrantApp::Config
   .option(:unison, mount_plugin == 'vagrant-unison2') # Unison plugin installation
   .option(:network, '33.33.33.0/24') # Directory to be used as mount on host machine
   .option(:forward_port, false) # Forward port 80 to 8080 on host?
+  .option(:redis_memory, false) # Set default value to false meaning: don't change the redis memory
 Vagrant.configure("2") do |config|
 
   # Prepare configuration and setup shell scripts for it
@@ -77,6 +78,7 @@ Vagrant.configure("2") do |config|
     .shell_add('unison.sh', :unison)
     .shell_add('ioncube.sh', :ioncube) # IonCube installer shell script, depends on :ioncube flag
     .shell_add('ssh_key.sh')
+    .shell_add('redis_memory.sh')
     .shell_add('nodejs.sh')
     .shell_add('hello.sh') # Final message with connection instructions
 
@@ -147,6 +149,7 @@ Vagrant.configure("2") do |config|
         VAGRANT_XDEBUG: box_config.get(:xdebug),
         VAGRANT_MYSQL_VERSION: box_config.get(:mysql_version),
         VAGRANT_PHP_VERSION: box_config.get(:php_version),
+        VAGRANT_REDIS_MEMORY: box_config.get(:redis_memory),
         VAGRANT_CGROUP_ENABLED: box_config.get(:memory_production)
     }
   end
