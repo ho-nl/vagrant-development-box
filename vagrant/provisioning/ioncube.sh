@@ -11,6 +11,8 @@ PHP_VERSION=`echo "<?php echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION ?>" | php`
 sudo cp $HOME/ioncube/ioncube_loader_lin_$PHP_VERSION.so $PHP_EXTENSION_DIR
 echo "zend_extension=ioncube_loader_lin_$PHP_VERSION.so" > 00-ioncube.ini
 sudo mv 00-ioncube.ini /etc/php/$PHP_VERSION/fpm/conf.d/
+sudo mv 00-ioncube.ini /etc/php/$PHP_VERSION/fpm-xdebug/conf.d/
 
 rm -rf $HOME/ioncube
 sudo service php$PHP_VERSION-fpm restart
+sudo service php$PHP_VERSION-fpm-xdebug restart
