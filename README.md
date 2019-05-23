@@ -163,6 +163,9 @@ debugging.
 
 Using xdebug with the `php` CLI command can be done using the `phpd` alias which is set up to load the `xdebug.so` module.
 
+See https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc for a plugin to easily set
+the debugging cookie in Google Chrome.
+
 # Magento 2 configuration
 
 ## env.php
