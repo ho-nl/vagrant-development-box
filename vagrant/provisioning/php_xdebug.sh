@@ -42,11 +42,9 @@ if [ ! -f ${MODULES_DIR}xdebug.so ]; then
     rm -rf /tmp/xdebug*
 fi
 
-# Configure PHP to load xdebug.so
-# TODO: don't add zend_extension line for CLI; setup an alias or switcher for loading through command line option
+# Configure xdebug for CLI and fpm-xdebug
 for i in fpm-xdebug cli; do
-    EXTENSION_CONFIG="zend_extension = ${MODULES_DIR}xdebug.so
-xdebug.max_nesting_level=2000
+    EXTENSION_CONFIG="xdebug.max_nesting_level=2000
 xdebug.remote_enable=1
 xdebug.remote_host=33.33.33.1
 xdebug.remote_port=9000
@@ -55,6 +53,12 @@ xdebug.remote_port=9000
     touch ${PHP_CONF_DIR}/${i}/conf.d/10-xdebug.ini
     echo -n "$EXTENSION_CONFIG" > ${PHP_CONF_DIR}/${i}/conf.d/10-xdebug.ini
 done
+
+# Clean possible left over file if xdebug was already enabled
+rm -f ${PHP_CONF_DIR}/fpm/conf.d/10-xdebug.ini;
+
+# Only load module by default for fpm-xdebug, CLI will load through command line option using an alias
+echo "zend_extension = ${MODULES_DIR}xdebug.so" >> ${PHP_CONF_DIR}/fpm-xdebug/conf.d/10-xdebug.ini;
 
 if [ -f ${PHP_CONF_DIR}/fpm/conf.d/fpminspector.ini ]; then
     mv ${PHP_CONF_DIR}/fpm/conf.d/fpminspector.ini ${PHP_CONF_DIR}/fpm/conf.d/fpminspector.ini.disabled

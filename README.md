@@ -155,6 +155,14 @@ Due to an issue with the `mailhog` service not starting on its own some addition
 
 Alternatively you can just run `mailhog` from the command line and let it run in the foreground when needed.
 
+## Debugging with xdebug
+
+Debugging using xdebug can be done by setting the XDEBUG_SESSION cookie. If set, nginx will route the request to a
+separate PHP-FPM instance that has `xdebug.so` loaded so that there is no performance impact when not actively
+debugging.
+
+Using xdebug with the `php` CLI command can be done using the `phpd` alias which is set up to load the `xdebug.so` module.
+
 # Magento 2 configuration
 
 ## env.php
