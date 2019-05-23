@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+AS_USER="sudo -u ${VAGRANT_USER}"
 HOME_DIR=$(getent passwd ${VAGRANT_USER} | cut -d ':' -f6)
 
 PHP_V=$(php -v|awk '{ print $0 }'|awk -F\, '{ print $1 }')
@@ -17,7 +18,7 @@ alias phpd='php -dzend_extension=$MODULES_DIR/xdebug.so -dxdebug.remote_autostar
 ";
 
 rm -f "${HOME_DIR}/.bash_aliases";
-touch "${HOME_DIR}/.bash_aliases";
-$AS_USER echo -n "${CONFIG}" > "${HOME_DIR}/.bash_aliases"
+$AS_USER touch "${HOME_DIR}/.bash_aliases";
+echo -n "${CONFIG}" >> "${HOME_DIR}/.bash_aliases"
 
 echo $(cat ${HOME_DIR}/.bash_aliases)
