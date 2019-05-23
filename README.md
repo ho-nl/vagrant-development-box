@@ -91,7 +91,6 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `unison_host` - Relative path from this vagrant folder to the source of the root of the installation. (default: `../src`)
 * `unison_guest` (default: `public`)
 * `unison_repeat` (default: `watch`) Unison repeat mode, can be a number in seconds or 'watch'
-* `xdebug` Install xdebug? (default: `false`)
 * `forward_port` Forward port 80 to 8080 on host (default: `false`) 
 * `redis_memory` Set the redis memory. E.g. `'128mb'` (default: `false`)
 

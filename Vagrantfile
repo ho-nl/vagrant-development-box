@@ -23,7 +23,6 @@ require_relative 'vagrant/inline/config'
 VagrantApp::Config
   .option(:varnish, false) # If varnish needs to be enabled
   .option(:varnish_vcl, false) # Path to your varnish vcl file
-  .option(:xdebug, false) # Is xdebug needs to be installed
   .option(:developer, false) # Is developer mode should be enabled
   .option(:magento2, false) # Is it Magento 2.0
   .option(:install, false) # Install Magento? (for now only 2.0)
@@ -150,7 +149,6 @@ Vagrant.configure("2") do |config|
         VAGRANT_HOSTNAME: box_config.get(:hostname),
         VAGRANT_PROJECT_DIR: project_dir,
         VAGRANT_HOST_PUBLIC_KEY: public_key,
-        VAGRANT_XDEBUG: box_config.get(:xdebug),
         VAGRANT_MYSQL_VERSION: box_config.get(:mysql_version),
         VAGRANT_PHP_VERSION: box_config.get(:php_version),
         VAGRANT_REDIS_MEMORY: box_config.get(:redis_memory),
