@@ -47,7 +47,7 @@ git clone git@github.com:ho-nl/vagrant-development-box.git vagrant
 cd vagrant
 ```
 
-c. Create a config.rb file in you /src folder with your project settings
+c. Create a config.rb file in you project folder with your project settings
 ```ruby
 name 'paracord'
 hostname name + '.box'
@@ -59,7 +59,7 @@ magento2 true
 #xdebug true
 ```
 
-d. Run `vagrant up` in this directory, if everything went alright you're greeted with this message:
+d. Run `vagrant up` in the `vagrant` directory, if everything went alright you're greeted with this message:
 
 <img width="613" alt="schermafbeelding 2017-09-30 om 14 57 29" src="https://user-images.githubusercontent.com/1244416/31045958-bb833756-a5ef-11e7-918b-6529dbc8480e.png">
 
