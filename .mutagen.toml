@@ -1,0 +1,22 @@
+[sync]
+mode = "two-way-resolved"
+scanMode = "accelerated"
+probeMode = "assume"
+
+[symlink]
+mode = "posix-raw"
+
+[ignore]
+default = [
+    ".DS_Store",
+    "._*",
+    "/var/cache",
+    "/var/page_cache",
+    "/.idea",
+    "/dev/tests/api-functional/tmp",
+    "/dev/tests/integration/tmp",
+    "/dev/tests/setup-integration/tmp",
+    "/dev/tests/unit/tmp",
+    "/node_modules"
+]
+vcs = true
