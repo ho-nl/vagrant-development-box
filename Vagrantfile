@@ -4,19 +4,6 @@
  end
 end
 
-mount_plugin=nil
-
-%w(vagrant-unison2 vagrant-nfs_guest).each do |plugin|
- if Vagrant.has_plugin?(plugin)
-    mount_plugin=plugin
-    break
- end
-end
-
-if mount_plugin.nil?
-   raise 'No efficient shared mount plugins found, please install vagrant-unison2 or vagrant-nfs_guest'
-end
-
 require_relative 'vagrant/inline/config'
 
 # Define Vagrantfile configuration options
@@ -24,34 +11,30 @@ VagrantApp::Config
   .option(:varnish, false) # If varnish needs to be enabled
   .option(:varnish_vcl, false) # Path to your varnish vcl file
   .option(:xdebug, false) # Is xdebug needs to be installed
-  .option(:developer, false) # Is developer mode should be enabled
-  .option(:magento2, false) # Is it Magento 2.0
+  .option(:developer, true) # Is developer mode should be enabled
+  .option(:magento2, true) # Is it Magento 2.0
   .option(:install, false) # Install Magento? (for now only 2.0)
   .option(:shell, false) # Shell script?
-  .option(:php_version, '7.0') # PHP version
+  .option(:php_version, '7.2') # PHP version
   .option(:mysql_version, '5.6') # MySQL version
   .option(:ioncube, false) # Flag for installing IonCube loader PHP module
   .option(:name, '') # Name
-  .option(:linked_clone, false) # Use a linked base box clone
+  .option(:linked_clone, true) # Use a linked base box clone
   .option(:hostname, '') # Hostname
   .option(:domains, []) # Domain list
-  .option(:cpu, 1) # Number of dedicated CPU
-  .option(:memory, 1024) # Number of dedicated memory in MB
+  .option(:cpu, 4) # Number of dedicated CPU
+  .option(:memory, 2048) # Number of dedicated memory in MB
   .option(:memory_production, false) # Run in production memory mode
   .option(:user, 'app') # User name for share
   .option(:group, 'app') # Group name for share
   .option(:uid, Process.euid) # User ID for mapping
   .option(:gid, Process.egid) # Group ID for mapping
-  .option(:directory, 'server') # Directory to be used as mount on host machine for NFS guest plugin
-  .option(:unison_host, 'project') # Directory for project code
-  .option(:unison_guest, 'project') # Directory for project code
-  .option(:unison_ignore, 'Name {.DS_Store,.git}') # Unison ignore pattern
-  .option(:unison_repeat, '1') # Unison repeat mode, can be a number in seconds or 'watch'
-  .option(:unison_manage_permissions, false) # Unison manage permissions
-  .option(:unison, mount_plugin == 'vagrant-unison2') # Unison plugin installation
   .option(:network, '33.33.33.0/24') # Directory to be used as mount on host machine
   .option(:forward_port, false) # Forward port 80 to 8080 on host?
   .option(:redis_memory, false) # Set default value to false meaning: don't change the redis memory
+  .option(:host_dir, '../src')
+  .option(:guest_dir, 'magento2')
+
 Vagrant.configure("2") do |config|
 
   # Prepare configuration and setup shell scripts for it
@@ -60,7 +43,6 @@ Vagrant.configure("2") do |config|
   # Base hypernode provisioner
   box_config
     .shell_add('hypernode.sh')
-    .shell_add('nfs.sh', :unison, true)
     .shell_add('developer.sh', :developer)
     .shell_add('mysql_version.sh')
     .shell_add('php_version.sh')
@@ -76,7 +58,6 @@ Vagrant.configure("2") do |config|
     .shell_add('magento2-install.sh', [:magento2, :install]) # M2 Installer, depends on :magento2 and :install
     .shell_add('magento2-developer.sh', [:magento2, :install, :developer]) # M2 Developer options, depends on :magento2, :install, :developer
     .shell_add('shell.sh', :shell) # Fish shell installer, depends on :shell flag
-    .shell_add('unison.sh', :unison)
     .shell_add('ioncube.sh', :ioncube) # IonCube installer shell script, depends on :ioncube flag
     .shell_add('ssh_key.sh')
     .shell_add('redis_memory.sh')
@@ -128,12 +109,6 @@ Vagrant.configure("2") do |config|
   # Disable default /vagrant mount as we use custom user for box
   config.vm.synced_folder '.', '/vagrant/', disabled: true
 
-  unless box_config.flag?(:unison)
-    project_dir = 'magento2'
-  else
-    project_dir =  box_config.get(:unison_guest)
-  end
-
   # Automatically upload the users id_rsa.pub to the box
   public_key_path = File.join(Dir.home, ".ssh", "id_rsa.pub")
 
@@ -148,7 +123,7 @@ Vagrant.configure("2") do |config|
         VAGRANT_USER: box_config.get(:user),
         VAGRANT_GROUP: box_config.get(:group),
         VAGRANT_HOSTNAME: box_config.get(:hostname),
-        VAGRANT_PROJECT_DIR: project_dir,
+        VAGRANT_PROJECT_DIR: box_config.get(:guest_dir),
         VAGRANT_HOST_PUBLIC_KEY: public_key,
         VAGRANT_XDEBUG: box_config.get(:xdebug),
         VAGRANT_MYSQL_VERSION: box_config.get(:mysql_version),
@@ -162,7 +137,7 @@ Vagrant.configure("2") do |config|
     config.vm.provision 'shell', path: 'vagrant/boot/varnish.sh', run: 'always', env: {
         VARNISH_VCL: box_config.get(:varnish_vcl),
         VAGRANT_USER: box_config.get(:user),
-        VAGRANT_PROJECT_DIR: project_dir
+        VAGRANT_PROJECT_DIR: box_config.get(:guest_dir)
     }
   end
 
@@ -180,25 +155,19 @@ Vagrant.configure("2") do |config|
     node.vm.hostname = box_config.get(:hostname)
     node.vm.network :private_network, auto_network: true
     node.hostmanager.aliases = box_config.get(:domains)
+  end
 
+  config.trigger.after :up do |trigger|
+    trigger.info = "💥 💥 💥 Setting up sync: mutagen create"
+    trigger.ruby do |env,machine|
+      system("mutagen create #{box_config.get(:host_dir)} app@#{box_config.get(:hostname)}:~/#{box_config.get(:guest_dir)} --no-global-configuration --configuration-file ./.mutagen.toml --label #{box_config.get(:name)}")
+    end
+  end
 
-    unless box_config.get(:unison)
-      node.vm.synced_folder box_config.get(:directory), '/data/web', type: 'nfs_guest', create: true,
-                              linux__nfs_options: %w(rw no_subtree_check all_squash insecure async),
-                              map_uid: box_config.get(:uid).to_s,
-                              map_gid: box_config.get(:gid).to_s,
-                              owner: box_config.get(:user),
-                              group: box_config.get(:group)
-    else
-      config.unison.host_folder = box_config.get(:unison_host)
-      config.unison.guest_folder = box_config.get(:unison_guest)
-      config.unison.ignore = box_config.get(:unison_ignore)
-      config.unison.repeat = box_config.get(:unison_repeat)
-      config.unison.perm = box_config.flag?(:unison_manage_permissions) ? 1 : 0
-      config.unison.ssh_host = box_config.get(:hostname)
-      config.unison.ssh_user = 'app'
-      config.unison.ssh_port = 22
-      config.unison.ssh_use_agent = true
+  config.trigger.before :halt, :destroy do |trigger|
+    trigger.info = "Terminating sync: mutagen terminate"
+    trigger.ruby do |env,machine|
+      system("mutagen terminate #{box_config.get(:name)}")
     end
   end
 
