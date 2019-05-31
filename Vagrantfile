@@ -166,9 +166,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.trigger.before :halt, :destroy do |trigger|
-    trigger.info = "💥 Stopping sync: mutagen terminate 💥"
+    trigger.info = "Stopping sync: mutagen terminate"
     trigger.ruby do |env,machine|
-      system("mutagen terminate #{box_config.get(:name)}")
+      system("mutagen terminate #{box_config.get(:name)} > /dev/null 2>&1")
     end
   end
 
