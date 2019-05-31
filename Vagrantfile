@@ -158,14 +158,15 @@ Vagrant.configure("2") do |config|
   end
 
   config.trigger.after :up do |trigger|
-    trigger.info = "💥 💥 💥 Setting up sync: mutagen create"
+    trigger.info = "💥 Starting up sync: mutagen create 💥"
     trigger.ruby do |env,machine|
+      system("mutagen terminate #{box_config.get(:name)} > /dev/null 2>&1")
       system("mutagen create #{box_config.get(:host_dir)} app@#{box_config.get(:hostname)}:~/#{box_config.get(:guest_dir)} --no-global-configuration --configuration-file ./.mutagen.toml --label #{box_config.get(:name)}")
     end
   end
 
   config.trigger.before :halt, :destroy do |trigger|
-    trigger.info = "Terminating sync: mutagen terminate"
+    trigger.info = "💥 Stopping sync: mutagen terminate 💥"
     trigger.ruby do |env,machine|
       system("mutagen terminate #{box_config.get(:name)}")
     end
