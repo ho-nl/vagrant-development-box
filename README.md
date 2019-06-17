@@ -9,7 +9,7 @@ Based on images from https://github.com/byteinternet/hypernode-vagrant
 a. Mutagen installed
 
 ```
-brew install mutagen
+brew install havoc-io/mutagen/mutagen
 ```
 
 b. [Vagrant](https://www.vagrantup.com/downloads.html) installed
