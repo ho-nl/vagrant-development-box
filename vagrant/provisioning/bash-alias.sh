@@ -15,6 +15,7 @@ echo "🔥  Setting up bash aliases"
 
 CONFIG="
 alias phpd='php -dzend_extension=$MODULES_DIR/xdebug.so -dxdebug.remote_autostart=On'
+alias curld='curl --cookie "XDEBUG_SESSION=PhpStorm" -o /dev/null'
 ";
 
 rm -f "${HOME_DIR}/.bash_aliases";
