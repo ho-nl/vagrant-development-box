@@ -10,6 +10,8 @@ a. Mutagen installed
 
 ```
 brew install havoc-io/mutagen/mutagen
+mutagen daemon register
+mutagen daemon start
 ```
 
 b. [Vagrant](https://www.vagrantup.com/downloads.html) installed
@@ -56,14 +58,14 @@ name 'yourboxname'
 hostname name + '.box'
 php_version 7.2
 mysql_version 5.6
+guest_dir 'public'
 magento2 false
 ```
 
 d. Run `vagrant up` in the `vagrant` directory, if everything went alright you're greeted with this message:
 <img width="613" alt="schermafbeelding 2017-09-30 om 14 57 29" src="https://user-images.githubusercontent.com/1244416/31045958-bb833756-a5ef-11e7-918b-6529dbc8480e.png">
 
-e. Run `mutagen daemon register` (you only need to do this once)  
-f. Optional: run `mutagen monitor` to monitor changes  
+e. Optional: run `mutagen monitor` to monitor changes  
 
 Please note: it will show some red errors but you can ignore that, those are mostly warnings that can be ignored. If you see a sea of red something probably goes wrong.
 
