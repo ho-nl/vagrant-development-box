@@ -18,5 +18,27 @@ $AS_USER chmod 755 bin/magento
 
 echo "Installing ..."
 
-[ -f ${HOME_DIR}/${MAGENTO_DIR}/app/etc/env.php ] || $AS_USER bin/magento setup:install --db-host=localhost --db-name=magento2 --db-user=app --db-password=${MYSQLPASSWORD} --admin-firstname=Admin --admin-lastname=user --admin-user=admin --admin-password=Password123 --admin-email=admin@example.com --base-url=http://${VAGRANT_HOSTNAME}/ --language=en_US --timezone=Europe/Amsterdam --currency=EUR --use-rewrites=1
+[ -f ${HOME_DIR}/${MAGENTO_DIR}/app/etc/env.php ] || $AS_USER bin/magento setup:install \
+    --db-host=localhost \
+    --db-name=magento2 \
+    --db-user=app \
+    --db-password=${MYSQLPASSWORD} \
+    --admin-firstname=Admin \
+    --admin-lastname=user \
+    --admin-user=admin \
+    --admin-password=Password123 \
+    --admin-email=admin@example.com \
+    --base-url=http://${VAGRANT_HOSTNAME}/ \
+    --language=en_US \
+    --timezone=Europe/Amsterdam \
+    --currency=EUR \
+    --enable-debug-logging=1 \
+    --use-rewrites=1 \
+    --backend-frontname=admin
+
 [ -L ../public ] || $AS_USER ln -fs ../${MAGENTO_DIR}/pub/* ../public
+
+echo "Setting developer mode..."
+
+$AS_USER bin/magento deploy:mode:set developer
+$AS_USER rm -rf generated/code generated/metadata
