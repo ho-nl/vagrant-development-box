@@ -18,5 +18,5 @@ then
     echo "🔥  Setting up custom shell profile"
     $AS_USER echo "${VAGRANT_HOST_CUSTOM_PROFILE}" > ${HOME_DIR}/.profile_custom
 
-    grep profile_custom ${HOME_DIR}/.bash_profile > /dev/null || echo "source ${HOME_DIR}/.profile_custom" >> ${HOME_DIR}/.bash_profile
+    grep profile_custom ${HOME_DIR}/.bash_profile > /dev/null || printf "\nsource ${HOME_DIR}/.profile_custom\n\n" >> ${HOME_DIR}/.bash_profile
 fi
