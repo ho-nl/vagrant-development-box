@@ -90,9 +90,22 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `uid` - User ID of your host to be mapped to linux VM (default: `Process.euid`)
 * `gid` - Group ID of your host to be mapped to linux VM (default: `Process.egid`)
 * `network` - Network mast for automatic network assignment to VM (default: `33.33.33.0/24`)
-* `xdebug` Install xdebug? (default: `false`)
 * `forward_port` Forward port 80 to 8080 on host (default: `false`) 
 * `redis_memory` Set the redis memory. E.g. `'128mb'` (default: `false`)
+
+### Customizing provisioning
+
+You can easily add more provision shell scripts from the configuration file (config.rb):
+```ruby
+shell_add 'some-custom-shell-script.sh'
+
+# Will provision only if PHP7 flag is turned on
+shell_add 'some-custom-script-for-php7.sh', :php7  
+```
+
+If you have some personal shell customization that you want to have available in all your
+vagrant environments automatically, you can create a file `~/.vagrant_profile` on your host machine. This file is
+automatically copied to your vagrant box (`~/.profile_custom`) and sourced on shell start up. 
 
 ## Connecting to your Vagrant box
 
@@ -136,6 +149,17 @@ By default, `mailhog` is installed in your vagrant box. This runs as a daemon an
 Due to an issue with the `mailhog` service not starting on its own some additional steps are currently required to run this as a service: https://github.com/ho-nl/vagrant-development-box/issues/77
 
 Alternatively you can just run `mailhog` from the command line and let it run in the foreground when needed.
+
+## Debugging with xdebug
+
+Debugging using xdebug can be done by setting the XDEBUG_SESSION cookie. If set, nginx will route the request to a
+separate PHP-FPM instance that has `xdebug.so` loaded so that there is no performance impact when not actively
+debugging.
+
+Using xdebug with the `php` CLI command can be done using the `phpd` alias which is set up to load the `xdebug.so` module.
+
+See https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc for a plugin to easily set
+the debugging cookie in Google Chrome.
 
 # Magento 2 configuration
 

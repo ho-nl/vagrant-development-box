@@ -3,7 +3,7 @@ PHP_VERSION=${PHP_V:4:3}
 
 echo "🔥  Ensuring php errors are shown in the browser"
 
-for i in fpm cli; do
+for i in fpm-xdebug fpm cli; do
     CONFIG="display_errors = On
 display_startup_errors = On
 ";
@@ -14,4 +14,5 @@ display_startup_errors = On
 done
 
 # Restart PHP
-sudo service "php${PHP_VERSION}-fpm" stop
+systemctl restart php${PHP_VERSION}-fpm
+systemctl restart php${PHP_VERSION}-fpm-xdebug

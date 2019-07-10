@@ -46,9 +46,9 @@ Vagrant.configure("2") do |config|
     .shell_add('developer.sh', :developer)
     .shell_add('mysql_version.sh')
     .shell_add('php_version.sh')
-    .shell_add('php_show_errors.sh')
     .shell_add('php_composer.sh')
     .shell_add('php_xdebug.sh')
+    .shell_add('php_show_errors.sh')
     .shell_add('bash-alias.sh')
     .shell_add('memory_management.sh')
     .shell_add('nginx_rate_limiting.sh')
@@ -116,6 +116,13 @@ Vagrant.configure("2") do |config|
     public_key = IO.read(public_key_path)
   end
 
+  # Upload custom shell profile
+  custom_profile_path = File.join(Dir.home, ".vagrant_profile")
+
+  if File.exist?(custom_profile_path)
+    custom_profile = IO.read(custom_profile_path)
+  end
+
   box_config.shell_list.each do |file|
     config.vm.provision 'shell', path: 'vagrant/provisioning/' + file, env: {
         VAGRANT_UID: box_config.get(:uid).to_s,
@@ -125,6 +132,7 @@ Vagrant.configure("2") do |config|
         VAGRANT_HOSTNAME: box_config.get(:hostname),
         VAGRANT_PROJECT_DIR: box_config.get(:guest_dir),
         VAGRANT_HOST_PUBLIC_KEY: public_key,
+        VAGRANT_HOST_CUSTOM_PROFILE: custom_profile,
         VAGRANT_XDEBUG: box_config.get(:xdebug),
         VAGRANT_MYSQL_VERSION: box_config.get(:mysql_version),
         VAGRANT_PHP_VERSION: box_config.get(:php_version),
