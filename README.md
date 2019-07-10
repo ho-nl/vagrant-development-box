@@ -91,7 +91,6 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `unison_host` - Relative path from this vagrant folder to the source of the root of the installation. (default: `../src`)
 * `unison_guest` (default: `public`)
 * `unison_repeat` (default: `watch`) Unison repeat mode, can be a number in seconds or 'watch'
-* `xdebug` Install xdebug? (default: `false`)
 * `forward_port` Forward port 80 to 8080 on host (default: `false`) 
 * `redis_memory` Set the redis memory. E.g. `'128mb'` (default: `false`)
 
@@ -159,6 +158,17 @@ By default, `mailhog` is installed in your vagrant box. This runs as a daemon an
 Due to an issue with the `mailhog` service not starting on its own some additional steps are currently required to run this as a service: https://github.com/ho-nl/vagrant-development-box/issues/77
 
 Alternatively you can just run `mailhog` from the command line and let it run in the foreground when needed.
+
+## Debugging with xdebug
+
+Debugging using xdebug can be done by setting the XDEBUG_SESSION cookie. If set, nginx will route the request to a
+separate PHP-FPM instance that has `xdebug.so` loaded so that there is no performance impact when not actively
+debugging.
+
+Using xdebug with the `php` CLI command can be done using the `phpd` alias which is set up to load the `xdebug.so` module.
+
+See https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc for a plugin to easily set
+the debugging cookie in Google Chrome.
 
 # Magento 2 configuration
 
