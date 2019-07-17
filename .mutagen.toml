@@ -19,4 +19,4 @@ default = [
     "/dev/tests/unit/tmp",
     "/node_modules"
 ]
-vcs = true
+vcs = false
