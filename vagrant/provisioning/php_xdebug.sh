@@ -20,7 +20,11 @@ PHP_CONF_DIR="/etc/php/$PHP_VERSION"
 
 service nginx stop
 
-# Download the configured release
+if [ -f "/lib/systemd/system/php$PHP_VERSION-fpm-xdebug.service" ]; then
+    systemctl stop "php$PHP_VERSION-fpm-xdebug"
+fi
+
+# Download and compile the configured release
 if [ ! -f ${MODULES_DIR}xdebug.so ]; then
     echo "🔥  Installing Xdebug for PHP $PHP_VERSION in $MODULES_DIR ($XDEBUG_RELEASE)"
 
@@ -42,10 +46,42 @@ if [ ! -f ${MODULES_DIR}xdebug.so ]; then
     cp -f modules/xdebug.so $MODULES_DIR
 
     rm -rf /tmp/xdebug*
-else
-    # Xdebug previously installed, so sytemd service exists and may be running
-    systemctl stop "php$PHP_VERSION-fpm-xdebug"
 fi
+
+# Setup separate xdebug php-fpm instance
+FPM_XDEBUG_CONF_DIR="/etc/php/${PHP_VERSION}/fpm-xdebug"
+if [ ! -d "$FPM_XDEBUG_CONF_DIR" ]; then
+  echo "🔥  Setting up Xdebug php$PHP_VERSION-fpm instance"
+
+  cp -a "/etc/php/${PHP_VERSION}/fpm" "$FPM_XDEBUG_CONF_DIR"
+
+  # Configure php-fpm.conf, www pool
+  sed -i "s/pid =.*/pid = \/run\/php\/php$PHP_VERSION-fpm-xdebug.pid/" "$FPM_XDEBUG_CONF_DIR/php-fpm.conf"
+  sed -i "s/error_log =.*/error_log = \/var\/log\/php$PHP_VERSION-fpm-xdebug.log/" "$FPM_XDEBUG_CONF_DIR/php-fpm.conf"
+  sed -i "s/include=.*/include=\/etc\/php\/$PHP_VERSION\/fpm-xdebug\/pool.d\/*.conf/" "$FPM_XDEBUG_CONF_DIR/php-fpm.conf"
+
+  sed -i "s/listen =.*/listen = 127.0.0.1:9099/" "$FPM_XDEBUG_CONF_DIR/pool.d/www.conf"
+  sed -i "s/slowlog =.*/slowlog = \/var\/log\/php-fpm\/php-slow-xdebug.log/" "$FPM_XDEBUG_CONF_DIR/pool.d/www.conf"
+
+  # Setup systemd service
+  SYSTEMD_CONFIG="[Unit]
+Description=The PHP $PHP_VERSION FastCGI Process Manager (xdebug)
+Documentation=man:php-fpm$PHP_VERSION(8)
+After=network.target
+
+[Service]
+Type=notify
+PIDFile=/run/php/php$PHP_VERSION-fpm-xdebug.pid
+Environment=\"PHP_INI_SCAN_DIR=/etc/php/$PHP_VERSION/fpm-xdebug/conf.d\"
+ExecStart=/usr/sbin/php-fpm$PHP_VERSION --nodaemonize --fpm-config /etc/php/$PHP_VERSION/fpm-xdebug/php-fpm.conf
+ExecReload=/bin/kill -USR2 \$MAINPID
+
+[Install]
+WantedBy=multi-user.target
+";
+  echo -n "$SYSTEMD_CONFIG" > "/lib/systemd/system/php$PHP_VERSION-fpm-xdebug.service"
+fi
+
 
 # Configure xdebug for CLI and fpm-xdebug
 for i in fpm-xdebug cli; do
@@ -80,5 +116,10 @@ echo -n "$NGINX_XDEBUG_MAP" > /etc/nginx/xdebug_cookie_map.conf
 grep xdebug_cookie_map /etc/nginx/nginx.conf || sed -i "/include \/etc\/nginx\/app\/http.*/ a \ \ \ \ include /etc/nginx/xdebug_cookie_map.conf;" /etc/nginx/nginx.conf
 sed -i "s/set \$fastcgi_pass.*/set \$fastcgi_pass \$phpfpm_backend;/" /etc/nginx/handlers.conf
 
+echo "🔥  Enabling and starting Xdebug php$PHP_VERSION-fpm service"
+
+systemctl enable "php$PHP_VERSION-fpm-xdebug"
 systemctl start "php$PHP_VERSION-fpm-xdebug"
-service nginx start
+
+echo "🔥  Starting nginx service"
+cd; service nginx start

@@ -13,6 +13,11 @@ PHP_V=$(php -v|awk '{ print $0 }'|awk -F\, '{ print $1 }')
 CURRENT_PHP_VERSION=${PHP_V:4:3}
 sudo service "php${CURRENT_PHP_VERSION}-fpm" stop
 
+# xdebug-fpm service may not exist yet on initial provision
+if [ -f "/lib/systemd/system/php$CURRENT_PHP_VERSION-fpm-xdebug.service" ]; then
+    sudo service "php$CURRENT_PHP_VERSION-fpm-xdebug" stop
+fi
+
 if [ $VAGRANT_PHP_VERSION == "7.1" ]; then
     if [ $(program_is_installed php7.1) == 0 ]; then
         echo "🔥  Installing PHP 7.1"
@@ -43,45 +48,11 @@ if [ $VAGRANT_PHP_VERSION == "7.2" ]; then
     fi
 fi
 
-# Setup separate xdebug php-fpm instance if not done yet
-FPM_XDEBUG_CONF_DIR="/etc/php/${VAGRANT_PHP_VERSION}/fpm-xdebug"
-if [ ! -d "$FPM_XDEBUG_CONF_DIR" ]; then
-  echo "🔥  Setting up xdebug php-fpm instance"
-
-  cp -a "/etc/php/${VAGRANT_PHP_VERSION}/fpm" "$FPM_XDEBUG_CONF_DIR"
-
-  # Configure php-fpm.conf, www pool
-  sed -i "s/pid =.*/pid = \/run\/php\/php$VAGRANT_PHP_VERSION-fpm-xdebug.pid/" "$FPM_XDEBUG_CONF_DIR/php-fpm.conf"
-  sed -i "s/error_log =.*/error_log = \/var\/log\/php$VAGRANT_PHP_VERSION-fpm-xdebug.log/" "$FPM_XDEBUG_CONF_DIR/php-fpm.conf"
-  sed -i "s/include=.*/include=\/etc\/php\/$VAGRANT_PHP_VERSION\/fpm-xdebug\/pool.d\/*.conf/" "$FPM_XDEBUG_CONF_DIR/php-fpm.conf"
-
-  sed -i "s/listen =.*/listen = 127.0.0.1:9099/" "$FPM_XDEBUG_CONF_DIR/pool.d/www.conf"
-  sed -i "s/slowlog =.*/slowlog = \/var\/log\/php-fpm\/php-slow-xdebug.log/" "$FPM_XDEBUG_CONF_DIR/pool.d/www.conf"
-
-  # Setup systemd service
-  SYSTEMD_CONFIG="[Unit]
-Description=The PHP $VAGRANT_PHP_VERSION FastCGI Process Manager (xdebug)
-Documentation=man:php-fpm$VAGRANT_PHP_VERSION(8)
-After=network.target
-
-[Service]
-Type=notify
-PIDFile=/run/php/php$VAGRANT_PHP_VERSION-fpm-xdebug.pid
-Environment=\"PHP_INI_SCAN_DIR=/etc/php/$VAGRANT_PHP_VERSION/fpm-xdebug/conf.d\"
-ExecStart=/usr/sbin/php-fpm$VAGRANT_PHP_VERSION --nodaemonize --fpm-config /etc/php/$VAGRANT_PHP_VERSION/fpm-xdebug/php-fpm.conf
-ExecReload=/bin/kill -USR2 \$MAINPID
-
-[Install]
-WantedBy=multi-user.target
-";
-  echo -n "$SYSTEMD_CONFIG" > "/lib/systemd/system/php$VAGRANT_PHP_VERSION-fpm-xdebug.service"
-  systemctl enable php$VAGRANT_PHP_VERSION-fpm-xdebug
-  systemctl start php$VAGRANT_PHP_VERSION-fpm-xdebug
-
-fi
-
 # Start the correct FPM daemon
 echo "🔥  Switching to PHP $VAGRANT_PHP_VERSION"
 sudo hypernode-switch-php $VAGRANT_PHP_VERSION &>/dev/null
 sudo service "php$VAGRANT_PHP_VERSION-fpm" start
 
+if [ -f "/lib/systemd/system/php$VAGRANT_PHP_VERSION-fpm-xdebug.service" ]; then
+    sudo service "php$VAGRANT_PHP_VERSION-fpm-xdebug" start
+fi

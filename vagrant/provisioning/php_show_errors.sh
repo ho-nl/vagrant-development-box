@@ -1,7 +1,8 @@
-PHP_V=$(php -v|awk '{ print $0 }'|awk -F\, '{ print $1 }')
-PHP_VERSION=${PHP_V:4:3}
+#!/usr/bin/env bash
 
-echo "🔥  Ensuring php errors are shown in the browser"
+PHP_VERSION=${VAGRANT_PHP_VERSION}
+
+echo "🔥  Ensuring PHP errors are shown in the browser"
 
 for i in fpm-xdebug fpm cli; do
     CONFIG="display_errors = On
