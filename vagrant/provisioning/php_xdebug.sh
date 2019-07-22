@@ -18,6 +18,8 @@ HOME_DIR=$(getent passwd ${VAGRANT_USER} | cut -d ':' -f6)
 
 PHP_CONF_DIR="/etc/php/$PHP_VERSION"
 
+service nginx stop
+
 # Download the configured release
 if [ ! -f ${MODULES_DIR}xdebug.so ]; then
     echo "🔥  Installing Xdebug for PHP $PHP_VERSION in $MODULES_DIR ($XDEBUG_RELEASE)"
@@ -40,6 +42,9 @@ if [ ! -f ${MODULES_DIR}xdebug.so ]; then
     cp -f modules/xdebug.so $MODULES_DIR
 
     rm -rf /tmp/xdebug*
+else
+    # Xdebug previously installed, so sytemd service exists and may be running
+    systemctl stop "php$PHP_VERSION-fpm-xdebug"
 fi
 
 # Configure xdebug for CLI and fpm-xdebug
@@ -65,7 +70,6 @@ if [ -f ${PHP_CONF_DIR}/fpm/conf.d/fpminspector.ini ]; then
 fi
 
 # Setup nginx to use xdebug php-fpm backend when XDEBUG_SESSION cookie is set
-# TODO: should probably always map to xdebug backend no regardless of cookie value
 NGINX_XDEBUG_MAP="# Map to appropriate php-fpm backend depending on xdebug cookie
 map \$cookie_XDEBUG_SESSION \$phpfpm_backend {
     default 127.0.0.1:9000;
@@ -76,6 +80,5 @@ echo -n "$NGINX_XDEBUG_MAP" > /etc/nginx/xdebug_cookie_map.conf
 grep xdebug_cookie_map /etc/nginx/nginx.conf || sed -i "/include \/etc\/nginx\/app\/http.*/ a \ \ \ \ include /etc/nginx/xdebug_cookie_map.conf;" /etc/nginx/nginx.conf
 sed -i "s/set \$fastcgi_pass.*/set \$fastcgi_pass \$phpfpm_backend;/" /etc/nginx/handlers.conf
 
-systemctl restart "php$PHP_VERSION-fpm"
-systemctl restart "php$PHP_VERSION-fpm-xdebug"
-service nginx restart
+systemctl start "php$PHP_VERSION-fpm-xdebug"
+service nginx start
