@@ -69,7 +69,7 @@ fi
 NGINX_XDEBUG_MAP="# Map to appropriate php-fpm backend depending on xdebug cookie
 map \$cookie_XDEBUG_SESSION \$phpfpm_backend {
     default 127.0.0.1:9000;
-    PHPSTORM 127.0.0.1:9099;
+    "~*[a-z]+" 127.0.0.1:9099;
 }
 "
 echo -n "$NGINX_XDEBUG_MAP" > /etc/nginx/xdebug_cookie_map.conf
