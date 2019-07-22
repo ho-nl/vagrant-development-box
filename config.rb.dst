@@ -1,14 +1,3 @@
-name 'magento-hypernode'
 hostname name + '.box'
-domains %w(www.magento-hypernode.box)
-developer true
-linked_clone true
-unison_host '../src'
-unison_repeat 'watch'
-directory 'server'
 varnish false
-unison_guest 'magento2'
-unison_ignore 'Name {.DS_Store,var/cache,var/page_cache,.idea,dev/tests/integration/tmp,dev/tests/unit/tmp}'
 varnish_vcl 'false'
-cpu 4
-memory 2048

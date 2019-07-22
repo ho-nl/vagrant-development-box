@@ -6,19 +6,12 @@ Based on images from https://github.com/byteinternet/hypernode-vagrant
 
 # Requirements
 
-a. Unison installed:
+a. Mutagen installed
 
-```bash
-brew install unison
-brew tap eugenmayer/dockersync
-brew install eugenmayer/dockersync/unox
 ```
-
-```bash
-# Fatal error: Server: Filesystem watcher error: cannot add a watcher: system limit reached
-sudo sysctl -w kern.maxfilesperproc=524288
-sudo sysctl -w kern.maxfiles=524288
-ulimit -n 524288
+brew install havoc-io/mutagen/mutagen
+mutagen daemon register
+mutagen daemon start
 ```
 
 b. [Vagrant](https://www.vagrantup.com/downloads.html) installed
@@ -28,7 +21,6 @@ c. Vagrant plugins installed:
 ```
 vagrant plugin install vagrant-hostmanager 
 vagrant plugin install vagrant-auto_network
-vagrant plugin install vagrant-unison2
 ```
 
 d. [VirtualBox](https://www.virtualbox.org/) installed
@@ -48,20 +40,32 @@ cd vagrant
 ```
 
 c. Create a config.rb file in you project folder with your project settings
+
+M2:
+
 ```ruby
-name 'paracord'
+name 'yourboxname'
 hostname name + '.box'
-magento2 true
-#php_version 7.1
-#unison_guest 'public' #when magento 1
+php_version 7.2
+mysql_version 5.7
 #varnish true
 #varnish_vcl 'magento2/varnish.vcl'
-#xdebug true
+```
+
+M1:
+```ruby
+name 'yourboxname'
+hostname name + '.box'
+php_version 7.2
+mysql_version 5.6
+guest_dir 'public'
+magento2 false
 ```
 
 d. Run `vagrant up` in the `vagrant` directory, if everything went alright you're greeted with this message:
-
 <img width="613" alt="schermafbeelding 2017-09-30 om 14 57 29" src="https://user-images.githubusercontent.com/1244416/31045958-bb833756-a5ef-11e7-918b-6529dbc8480e.png">
+
+e. Optional: run `mutagen monitor` to monitor changes  
 
 Please note: it will show some red errors but you can ignore that, those are mostly warnings that can be ignored. If you see a sea of red something probably goes wrong.
 
@@ -70,6 +74,8 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `name` - name of your node
 * `hostname` - default project hostname
 * `domains` - list of additional domain names for your project 
+* `host_dir` Sets the host sync dir (default: `../src`)
+* `guest_dir` Sets the guest sync dir (default: `magento2`)
 * `varnish` - enable or disable varnish for your project (can be always enabled for Magento 2, can be disabled in the application) (default: `false`)
 * `varnish_vcl` - relative path to the varnish file that is to be used, e.g. 'magento2/varnish.vcl' (default: null)
 * `developer` - enable or disable developer mode in Magento (default: `false`)
@@ -81,28 +87,13 @@ Please note: it will show some red errors but you can ignore that, those are mos
 * `linked_clone` - Link a master box instead of importing, should reduce disk space usage (default: `false`)
 * `cpu` - number of CPUs to dedicate to your VM (default: `1`)
 * `memory` - memory in MB to dedicate to your VM (default: `1024`)
-* `user` - User name for nfs share permissions (default: `app`)
-* `group` - Group name for nfs share permissions (default: `app`)
 * `uid` - User ID of your host to be mapped to linux VM (default: `Process.euid`)
 * `gid` - Group ID of your host to be mapped to linux VM (default: `Process.egid`)
-* `directory` - Directory to be used as mount on host machine (default: `server`)
 * `network` - Network mast for automatic network assignment to VM (default: `33.33.33.0/24`)
-* `unison_ignore` - Which files won't be used with updating changes with Unison (default `Name {.DS_Store,.git,var}`)
-* `unison_host` - Relative path from this vagrant folder to the source of the root of the installation. (default: `../src`)
-* `unison_guest` (default: `public`)
-* `unison_repeat` (default: `watch`) Unison repeat mode, can be a number in seconds or 'watch'
 * `forward_port` Forward port 80 to 8080 on host (default: `false`) 
 * `redis_memory` Set the redis memory. E.g. `'128mb'` (default: `false`)
 
-### Customizing provisioning
-
-You can easily add more provision shell scripts from the configuration file (config.rb):
-```ruby
-shell_add 'some-custom-shell-script.sh'
-
-# Will provision only if PHP7 flag is turned on
-shell_add 'some-custom-script-for-php7.sh', :php7  
-```
+### Customizing your shell
 
 If you have some personal shell customization that you want to have available in all your
 vagrant environments automatically, you can create a file `~/.vagrant_profile` on your host machine. This file is
@@ -113,32 +104,24 @@ automatically copied to your vagrant box (`~/.profile_custom`) and sourced on sh
 There are two ways to connect to your Vagrant box:
 1. As Root to do system administration: `vagrant ssh`
 	- DO NOT edit project files with the root user, this will give permission errors in the application
-2. As User to do all development work on: `ssh app@your-project-name.box`
+2. As User to do all development work on: `ssh app@yourboxname.box`
 
-## Syncing the `../src` (unison) folder with the vagrant box.
+## Syncing the `../src` folder with the vagrant box.
 
 The filesystem of your vagrant box must contain all files to be able to operate quickly.
 The filesystem of your host system must contain all files for PHPStorm be able to operate.
 
-To achieve this, we use Unison. From the vagrant folder, run the following.
-```
-vagrant unison-sync-polling
-```
-
-*You always need to enable this when working with the box, or else the local changes wont be made in the box.*
-
-### Resolve sync issues `skipped: var (properties changed on both sides)`
-
-Start unison with the following command `vagrant unison-sync-interact` to interactively solve issues. For more information take a look at the [vagrant plugin page](https://github.com/dcosson/vagrant-unison2#sync-in-interactive-mode).
+To achieve this, we use [Mutagen sync](https://mutagen.io/). When starting a vagrant box the mutagen sync is automatically started.
 
 ## Connecting to MySQL externally (SequelPro)
 
 You can directly connect to the vagrant box with the following credentials:
 ```
-host: your-project-name.box
+host: yourboxname.box
 username: app
-password: as mentioned in vagrant up/provision
+password: as mentioned in vagrant provision
 ```
+
 ## Enabling browser-sync
 
 You can setup port-forwarding to enable browser-sync with gulp. This enables you to test your development environment on your mobile phone or other PC.
@@ -176,14 +159,9 @@ the debugging cookie in Google Chrome.
 
 The system automatically creates a database named `test`, this can be used to upload your information. You can use the same DB connection info as used in SequelPro
 
-## Running grunt/gulp
-
-Run your `grunt exec:all` or `gulp production` from **outside** the box.
-They do work inside the box, but beware that the symlinks wont be correct in your local environment.
-
 ## Cache handling
 
-The box doesn't sync the `var` folder, Magento's cache needs to be flushed from the inside of the box: `php bin/magento c:f`.
+The box doesn't sync the `var/cache` folder, Magento's cache needs to be flushed from the inside of the box: `php bin/magento c:f`.
 
 ## Varnish
 
@@ -244,29 +222,11 @@ Add the following to `crontab -e`
 
 # Magento 1 configuration
 
-## Config needs to have correct unison_guest
-
-By default this box will try to set the unison_guest folder to the magento2 pub folder. For a Magento 1 installation this will result in a default Nginx 404 page when you try to reach your server. Add the following rule to your `config.rb` file: `unison_guest 'public'`
-
 ## Need to run modman deploy in vagrant box
 
 The symlinks created on your host machine won't work in the vagrant box. This will result in errors with finding files or (when you use PHP7) a error in layout.php (because the Inchoo_PHP7 module was not applied correctly). Run `modman deploy-all --force` in your vagrant box to fix these issues.
 
 # Common issues
-
-## Error: The archive file is missing on some hosts.
-
-When trying to use unison sync files between your machine and your vagrant box you might get a error that some archive files are missing. This happens mostly when you removed/changed/updated/moved your vagrant box. The error tells you what archive file is giving the issue, for example:
-```
-atal error: Warning: inconsistent state.  
-The archive file is missing on some hosts.
-For safety, the remaining copies should be deleted.
-  Archive ard815862d1c3d858683fe30cd114e54e4 on host name.local should be DELETED
-  Archive arc673d39eaeb32660a3e4c5296436adbf on host totalplants is MISSING
-```
-In this case the archive file `ard815862d1c3d858683fe30cd114e54e4` should be deleted. The local files are archived in `~/Library/Application\ Support/Unison/`.
-
-Sometimes the archive should be deleted on your vagrant machine, these archive files can be found in `/data/web/.unison` 
 
 ## Box size is much larger than necessary (2-3x file size reduction)
 
@@ -293,49 +253,9 @@ This usually happens when you upgrade the vagrant box version from 1.x to 2.x or
 
 Remove the hypernode box from `vagrant/.vagrant` and the error will disapear.
 
-## Fatal error due to incompatible unison versions between host and guest
-
-```
-Fatal error: Received unexpected header from the server:
- expected "Unison 2.51 with OCaml >= 4.01.2\n" but received "Unison 2.48\n\000\000\000\000\017",
-which differs at "Unison 2.4".
-```
-
-This can happen if the installed version of unison on the host is incompatible with the one in the box. If possible, upgrade unison inside your box.
-
-```bash
-cd my-project-dir/vagrant
-vagrant ssh
-sudo apt-get update && sudo apt list --upgradable
-sudo apt-get upgrade unison # If above command confirmed a new version is available
-```
-
-Else, switch to an older compatible version on the host with:
-
-```bash
-brew info unison # Show all installed versions
-brew switch unison 2.48.4 # Switch to appropriate version
-```
-
-This only works if an appropriate version was installed previously. If this is not the case, an older version of `unison` can be installed by looking up an older commit in the homebrew-core repository, and installing directly by URL, for example for version 2.48.15:
-
-```bash
-brew unlink unison # unlink currently active version
-brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/f5755fe4ccecb63c669d633f804428267d3bf3d1/Formula/unison.rb
-```
-
-Since the homebrew repository is not browsable on github due to its size, you will need to clone the repository and inspect it locally to find the right commit for the required version:
-
-```bash
-git clone git@github.com:Homebrew/homebrew-core.git
-cd homebrew-core
-git log -- Formula/unison.rb # May take a while
-```
-
 ## 'permission denied' on npm install or npm install -g
 Change the prefix of npm to solve this:
 ```bash
 npm config set prefix '/data/web/.npm-global'
 npm install -g gulp grunt grunt-cli polymer-cli
 ```
-
