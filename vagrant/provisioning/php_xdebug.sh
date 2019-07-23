@@ -117,9 +117,11 @@ grep xdebug_cookie_map /etc/nginx/nginx.conf || sed -i "/include \/etc\/nginx\/a
 sed -i "s/set \$fastcgi_pass.*/set \$fastcgi_pass \$phpfpm_backend;/" /etc/nginx/handlers.conf
 
 echo "🔥  Enabling and starting Xdebug php$PHP_VERSION-fpm service"
-
 systemctl enable "php$PHP_VERSION-fpm-xdebug"
 systemctl start "php$PHP_VERSION-fpm-xdebug"
 
 echo "🔥  Starting nginx service"
-cd; service nginx start
+# Change back to home dir first, as current directory is (or might be) removed, triggering a
+# getcwd() fatal error
+cd
+service nginx start
