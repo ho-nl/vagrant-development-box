@@ -95,8 +95,9 @@ Please note: it will show some red errors but you can ignore that, those are mos
 
 ### Customizing your shell
 
-If you have some personal shell customization that you want to have available in all your
-vagrant environments automatically, you can create a file `~/.vagrant_profile` on your host machine. This file is
+If you have some personal shell customization (like aliases) that you want to have available in all your
+vagrant environments automatically, you can create a file `~/.vagrant_profile` on your host machine (or make
+this a symlink to some other file if you have your aliases defined somewhere else). This file is
 automatically copied to your vagrant box (`~/.profile_custom`) and sourced on shell start up. 
 
 ## Connecting to your Vagrant box
