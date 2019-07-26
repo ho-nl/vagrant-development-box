@@ -10,5 +10,6 @@ set -e
     && /usr/local/bin/composer self-update
 
 # Remove PHP CLI memory limit to work around composer's extreme memory usage when calculating dependencies
-[ -f "/etc/php/${PHP_VERSION}/cli/conf.d/magweb.ini" ] && \
-    sed -i "s/memory_limit.*/memory_limit = -1/" "/etc/php/${PHP_VERSION}/cli/conf.d/magweb.ini"
+[ -f "/etc/php/${PHP_VERSION}/cli/conf.d/magweb.ini" ] \
+    && sed -i "s/memory_limit.*/memory_limit = -1/" "/etc/php/${PHP_VERSION}/cli/conf.d/magweb.ini" \
+    || true
