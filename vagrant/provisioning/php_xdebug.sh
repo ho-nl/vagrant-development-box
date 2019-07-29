@@ -2,7 +2,6 @@
 
 PHP_V=$(php -v|awk '{ print $0 }'|awk -F\, '{ print $1 }')
 PHP_VERSION=${PHP_V:4:3}
-HOME_DIR=$(getent passwd ${VAGRANT_USER} | cut -d ':' -f6)
 
 [ "$PHP_VERSION" == "5.5" ] && MODULES_DIR="/usr/lib/php/20121212/"
 [ "$PHP_VERSION" == "5.6" ] && MODULES_DIR="/usr/lib/php/20131226/"
@@ -30,7 +29,7 @@ if [ ! -f ${MODULES_DIR}xdebug.so ]; then
 
     # Install the required package(s)
     apt-get update
-    apt-get install ${PHP_VERSION}-dev -yy
+    apt-get install "${PHP_VERSION}"-dev -yy
 
     # Unpack Xdebug
     wget -q -nc -O /tmp/xdebug.tgz $XDEBUG_RELEASE
@@ -39,8 +38,9 @@ if [ ! -f ${MODULES_DIR}xdebug.so ]; then
     cd xdebug-*
 
     # Build Xdebug from source
-    phpize${PHP_VERSION}
-    ./configure --with-php-config=$(which php-config$PHP_VERSION)
+    phpize"${PHP_VERSION}"
+    PHP_CONFIG=$(command -v "php-config$PHP_VERSION")
+    ./configure --with-php-config="$PHP_CONFIG"
     make
 
     cp -f modules/xdebug.so $MODULES_DIR
@@ -96,26 +96,26 @@ xdebug.remote_enable=1
 xdebug.remote_host=33.33.33.1
 xdebug.remote_port=9000
 "
-    rm -f ${PHP_CONF_DIR}/${i}/conf.d/10-xdebug.ini;
-    touch ${PHP_CONF_DIR}/${i}/conf.d/10-xdebug.ini
-    echo -n "$EXTENSION_CONFIG" > ${PHP_CONF_DIR}/${i}/conf.d/10-xdebug.ini
+    rm -f "${PHP_CONF_DIR}"/${i}/conf.d/10-xdebug.ini;
+    touch "${PHP_CONF_DIR}"/${i}/conf.d/10-xdebug.ini
+    echo -n "$EXTENSION_CONFIG" > "${PHP_CONF_DIR}"/${i}/conf.d/10-xdebug.ini
 done
 
 # Clean possible left over file if xdebug was already enabled
-rm -f ${PHP_CONF_DIR}/fpm/conf.d/10-xdebug.ini;
+rm -f "${PHP_CONF_DIR}"/fpm/conf.d/10-xdebug.ini;
 
 # Only load module by default for fpm-xdebug, CLI will load through command line option using an alias
-echo "zend_extension = ${MODULES_DIR}xdebug.so" >> ${PHP_CONF_DIR}/fpm-xdebug/conf.d/10-xdebug.ini;
+echo "zend_extension = ${MODULES_DIR}xdebug.so" >> "${PHP_CONF_DIR}"/fpm-xdebug/conf.d/10-xdebug.ini;
 
-if [ -f ${PHP_CONF_DIR}/fpm/conf.d/fpminspector.ini ]; then
-    mv ${PHP_CONF_DIR}/fpm/conf.d/fpminspector.ini ${PHP_CONF_DIR}/fpm/conf.d/fpminspector.ini.disabled
+if [ -f "${PHP_CONF_DIR}"/fpm/conf.d/fpminspector.ini ]; then
+    mv "${PHP_CONF_DIR}"/fpm/conf.d/fpminspector.ini "${PHP_CONF_DIR}"/fpm/conf.d/fpminspector.ini.disabled
 fi
 
 # Setup nginx to use xdebug php-fpm backend when XDEBUG_SESSION cookie is set
 NGINX_XDEBUG_MAP="# Map to appropriate php-fpm backend depending on xdebug cookie
 map \$cookie_XDEBUG_SESSION \$phpfpm_backend {
     default 127.0.0.1:9000;
-    "~*[a-z]+" 127.0.0.1:9099;
+    \"~*[a-z]+\" 127.0.0.1:9099;
 }
 "
 echo -n "$NGINX_XDEBUG_MAP" > /etc/nginx/xdebug_cookie_map.conf
