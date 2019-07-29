@@ -82,6 +82,12 @@ WantedBy=multi-user.target
   echo -n "$SYSTEMD_CONFIG" > "/lib/systemd/system/php$PHP_VERSION-fpm-xdebug.service"
 fi
 
+# Disable fpm inspector, causes issues with mapping to local file in PhpStorm
+echo "🔥  Disabling fpm inspector for xdebug"
+if [ -f "$FPM_XDEBUG_CONF_DIR/conf.d/fpminspector.ini" ]; then
+  mv "$FPM_XDEBUG_CONF_DIR/conf.d/fpminspector.ini" "$FPM_XDEBUG_CONF_DIR/conf.d/fpminspector.ini.disabled"
+fi
+
 
 # Configure xdebug for CLI and fpm-xdebug
 for i in fpm-xdebug cli; do
