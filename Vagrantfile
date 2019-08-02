@@ -170,7 +170,7 @@ Vagrant.configure("2") do |config|
     trigger.info = "💥 Starting up sync: mutagen create 💥"
     trigger.ruby do |env,machine|
       system("mutagen terminate #{box_config.get(:name)} > /dev/null 2>&1")
-      system("until mutagen create #{box_config.get(:host_dir)} app@#{box_config.get(:hostname)}:~/#{box_config.get(:guest_dir)} --no-global-configuration --configuration-file ./.mutagen.toml --label #{box_config.get(:name)}; do echo \"Waiting for the box to be available in the network... (can take up to a minute)\"; sleep 2; done")
+      system("until mutagen create #{box_config.get(:host_dir)} app@#{box_config.get(:hostname)}:~/#{box_config.get(:guest_dir)} --no-global-configuration --configuration-file ./.mutagen.yaml --label #{box_config.get(:name)}; do echo \"Waiting for the box to be available in the network... (can take up to a minute)\"; sleep 2; done")
     end
   end
 
