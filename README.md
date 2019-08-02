@@ -10,8 +10,6 @@ a. Mutagen installed
 
 ```
 brew install havoc-io/mutagen/mutagen
-mutagen daemon register
-mutagen daemon start
 ```
 
 b. [Vagrant](https://www.vagrantup.com/downloads.html) installed
