@@ -8,8 +8,6 @@ sync:
 
     ignore:
       paths:
-        - ".DS_Store"
-        - "._*"
         - "/var/cache"
         - "/var/page_cache"
         - "/.idea"
