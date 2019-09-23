@@ -112,6 +112,11 @@ The filesystem of your host system must contain all files for PHPStorm be able t
 
 To achieve this, we use [Mutagen sync](https://mutagen.io/). When starting a vagrant box the mutagen sync is automatically started.
 
+If you're getting an `[Error]` with `mutagen monitor`, you can see the detailed error message with `mutagen list`.
+
+- [unable to locate staged files](https://github.com/mutagen-io/mutagen/issues/88#issuecomment-533392759)
+- [unable to create file: unable to ensure path does not exist: path exists](https://github.com/mutagen-io/mutagen/issues/124)
+
 ## Connecting to MySQL externally (SequelPro)
 
 You can directly connect to the vagrant box with the following credentials:
