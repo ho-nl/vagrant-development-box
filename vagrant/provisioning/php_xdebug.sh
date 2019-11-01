@@ -13,7 +13,7 @@ PHP_VERSION=${PHP_V:4:3}
 [ "$PHP_VERSION" == "5.6" ] && XDEBUG_RELEASE="https://xdebug.org/files/xdebug-2.5.5.tgz"
 [ "$PHP_VERSION" == "7.0" ] && XDEBUG_RELEASE="https://xdebug.org/files/xdebug-2.5.5.tgz"
 [ "$PHP_VERSION" == "7.1" ] && XDEBUG_RELEASE="https://xdebug.org/files/xdebug-2.6.0alpha1.tgz"
-[ "$PHP_VERSION" == "7.2" ] && XDEBUG_RELEASE="https://xdebug.org/files/xdebug-2.6.0alpha1.tgz"
+[ "$PHP_VERSION" == "7.2" ] && XDEBUG_RELEASE="https://xdebug.org/files/xdebug-2.8.0.tgz"
 
 PHP_CONF_DIR="/etc/php/$PHP_VERSION"
 
