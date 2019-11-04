@@ -52,6 +52,8 @@ fi
 # Start the correct FPM daemon
 echo "🔥  Switching to PHP $VAGRANT_PHP_VERSION"
 sudo hypernode-switch-php $VAGRANT_PHP_VERSION &>/dev/null
+# stop all previous version
+sudo systemctl stop "php*" --all
 sudo service "php$VAGRANT_PHP_VERSION-fpm" start
 
 if [ -f "/lib/systemd/system/php$VAGRANT_PHP_VERSION-fpm-xdebug.service" ]; then
