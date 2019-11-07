@@ -152,10 +152,21 @@ Debugging using xdebug can be done by setting the XDEBUG_SESSION cookie. If set,
 separate PHP-FPM instance that has `xdebug.so` loaded so that there is no performance impact when not actively
 debugging.
 
-Using xdebug with the `php` CLI command can be done using the `phpd` alias which is set up to load the `xdebug.so` module.
-
 See https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc for a plugin to easily set
 the debugging cookie in Google Chrome.
+
+Using xdebug with the `php` CLI command can be done using the `phpd` alias which is set up to load the `xdebug.so` module.
+
+To allow PhpStorm to automatically load `xdebug.so`, but only when debugging, configure your remote interpreter's 'Debugger extension':
+
+![Screenshot 2019-11-07 at 14 05 14](https://user-images.githubusercontent.com/459789/68391929-ec3f0100-0168-11ea-993a-9a3dfd5c3901.png)
+
+The correct path to `xdebug.so` for the currently active PHP version can be found by looking at the `phpd` alias, for example for PHP 7.2:
+
+```
+$ alias phpd
+alias phpd='php -dzend_extension=/usr/lib/php/20170718//xdebug.so -dxdebug.remote_autostart=On'
+```
 
 # Magento 2 configuration
 
